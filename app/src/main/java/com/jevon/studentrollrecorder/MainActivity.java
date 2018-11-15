@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private IntentFilter intentFilter;
     private String studentIDScanned = null;
 
+    /* Andrew Comment */
     private ServiceConnection idCheckServiceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder binder) {
