@@ -8,12 +8,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Toast;
+import android.util.Log;
 
 import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
@@ -21,7 +23,9 @@ import com.firebase.client.FirebaseError;
 import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.UserRecoverableAuthException;
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
@@ -30,6 +34,18 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.jevon.studentrollrecorder.pojo.User;
 import com.jevon.studentrollrecorder.utils.MyApplication;
 import com.jevon.studentrollrecorder.utils.Utils;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 /*This activity is launched on first install or if the user is logged out
 * It allows the to sign into the application using their Google account
@@ -37,7 +53,6 @@ import com.jevon.studentrollrecorder.utils.Utils;
 * The user's google sign in token is stored in shared prefs so that he is not prompted to sign in each time the app launches*/
 
 public class SignInActivity extends AppCompatActivity implements
-        GoogleApiClient.OnConnectionFailedListener,
         View.OnClickListener {
 
     private static final int REQUEST_AUTHORIZATION = 3 ;
@@ -47,6 +62,10 @@ public class SignInActivity extends AppCompatActivity implements
     private ProgressDialog progressDialog;
     private MyApplication myApplication;
     private Firebase ref;
+    private GoogleSignInClient mGoogleSignInClient;
+    private static final String TAG = "AAS";
+
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,40 +81,114 @@ public class SignInActivity extends AppCompatActivity implements
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //Extending the Application allows us to access data from any activity or class
-        myApplication = (MyApplication)getApplication();
-        myApplication.setFireBaseRef("https://comp3275.firebaseio.com");
-        ref = myApplication.getRef();
-
         //set up sign in button
+        // [START config_signin]
+        // Configure Google Sign In
         SignInButton sib = (SignInButton)findViewById(R.id.sign_in_button);
         if(sib!=null) sib.setOnClickListener(this);
-        setUpGoogleClient();
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+        // [END config_signin]
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        // [START initialize_auth]
+        // Initialize Firebase Auth
+        mAuth = FirebaseAuth.getInstance();
+        // [END initialize_auth]
     }
 
-    //set up google sign-in options and the apiClient
-    private void setUpGoogleClient() {
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail().build();
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
+    // [START on_start_check_user]
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
     }
+    // [END on_start_check_user]
+    // [START onactivityresult]
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        progressDialog.incrementProgressBy(1);
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                // Google Sign In was successful, authenticate with Firebase
+                GoogleSignInAccount account = task.getResult(ApiException.class);
+                progressDialog.incrementProgressBy(1);
+                firebaseAuthWithGoogle(account);
+            } catch (ApiException e) {
+                // Google Sign In failed, update UI appropriately
+                Log.w(TAG, "Google sign in failed", e);
+                // [START_EXCLUDE]
+                // [END_EXCLUDE]
+            }
+        }
+    }
+    // [END onactivityresult]
+
+    // [START auth_with_google]
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
+        // [START_EXCLUDE silent]
+        //showProgressDialog();
+        // [END_EXCLUDE]
+        final String email_str = acct.getEmail();
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            progressDialog.incrementProgressBy(1);
+                            progressDialog.setMessage("Finishing up");
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithCredential:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            setAsLoggedIn(email_str);
+
+                            Intent myIntent = new Intent(getBaseContext(), MainActivity.class);
+                            startActivity(myIntent);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                            Log.d(TAG, "Authentication Failed");
+                            //Snackbar.make(findViewById(R.id.main_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
+                        }
+
+                        // [START_EXCLUDE]
+                        progressDialog.hide();
+                        //hideProgressDialog();
+                        // [END_EXCLUDE]
+                    }
+                });
+    }
+    // [END auth_with_google]
+
+    // [START signin]
+    private void signIn() {
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+        setUpProgressDialog();
+        startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+    // [END signin]
+
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.sign_in_button:
-                signIn();
-                break;
-        }
-    }
-
-    private void signIn() {
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        setUpProgressDialog();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+        int i = v.getId();
+        if (i == R.id.sign_in_button) {
+            signIn();
+        } /*else if (i == R.id.signOutButton) {
+            signOut();
+        } else if (i == R.id.disconnectButton) {
+            revokeAccess();
+        } */
     }
 
     private void setUpProgressDialog(){
@@ -107,91 +200,6 @@ public class SignInActivity extends AppCompatActivity implements
         progressDialog.show();
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            handleSignInResult(result);
-        }
-        else if(requestCode == REQUEST_AUTHORIZATION){
-            if (resultCode == Activity.RESULT_OK) {
-                signIn();
-            } else {
-                // User denied access, show him the account chooser again
-                Toast.makeText(this, "You have to allow access", Toast.LENGTH_LONG).show();
-            }
-        }
-
-    }
-
-    //called after result in onActivityResult() for signIn() was received
-    private void handleSignInResult(final GoogleSignInResult result) {
-        final Context ctx = this;
-        if (result.isSuccess()) {
-            progressDialog.incrementProgressBy(1);
-            progressDialog.setMessage("Getting Google Account");
-            final GoogleSignInResult gsir = result;
-            //create thread to obtain the authentication token which will be used for firebase login.
-            final Thread thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    // Signed in successfully, show authenticated UI.
-                    GoogleSignInAccount acct = gsir.getSignInAccount();
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            progressDialog.incrementProgressBy(1);
-                            progressDialog.setMessage("Logging into account");
-                        }
-                    });
-
-                    String scopes = "oauth2:profile email";
-                    try {
-                        if (ContextCompat.checkSelfPermission(SignInActivity.this, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
-                            progressDialog.dismiss();
-                            ActivityCompat.requestPermissions(SignInActivity.this,
-                                    new String[]{Manifest.permission.INTERNET},
-                                    PERMISSION_INTERNET);
-                        }
-                        else {
-                            final String token = GoogleAuthUtil.getToken(getApplicationContext(), acct.getEmail(), scopes);
-                            ref.authWithOAuthToken("google", token, new Firebase.AuthResultHandler() {
-                                @Override
-                                public void onAuthenticated(AuthData authData) {
-                                    // the Google user is now authenticated with your Firebase app
-                                    progressDialog.incrementProgressBy(1);
-                                    progressDialog.setMessage("Finishing up");
-                                    setAsLoggedIn(authData.getUid());
-                                    progressDialog.dismiss();
-                                    //logged in so go to main activity
-                                    ctx.startActivity(new Intent(SignInActivity.this, MainActivity.class));
-                                    User newUser = new User(authData.getProviderData().get("displayName").toString(), authData.getProviderData().get("profileImageURL").toString());
-                                    ref.child("/users/").child(authData.getUid()).setValue((newUser));
-                                    finish();
-                                }
-                                @Override
-                                public void onAuthenticationError(FirebaseError firebaseError) {
-                                    Toast.makeText(SignInActivity.this,"Error Authenticating Firebase",Toast.LENGTH_LONG).show();
-                                }
-                            });
-                        }
-                    }catch (UserRecoverableAuthException er){
-                        startActivityForResult(er.getIntent(), REQUEST_AUTHORIZATION);
-                    }
-                    catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-            thread.start();
-        } else {
-            // Signed out, show unauthenticated UI.
-            Toast.makeText(this, "Unsuccessful", Toast.LENGTH_SHORT).show();
-        }
-    }
-
     //sets the user as logged in in sharedprefs so he won't have to log in each time the app is launched
     private void setAsLoggedIn(String uid){
         SharedPreferences sp = getSharedPreferences(Utils.SHAREDPREF, MODE_PRIVATE);
@@ -201,24 +209,6 @@ public class SignInActivity extends AppCompatActivity implements
         spe.apply();
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        if(requestCode == PERMISSION_INTERNET){
-            if(grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(this,"try signing in again", Toast.LENGTH_LONG).show();
-                if(progressDialog.isShowing())
-                    progressDialog.dismiss();
-                Intent i = getIntent();
-                finish();
-                startActivity(i);
-            }
-            else
-                Toast.makeText(this,"Internet permissions must be granted", Toast.LENGTH_LONG).show();
-        }
-    }
 
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-    }
 
 }

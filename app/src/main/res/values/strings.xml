@@ -13,7 +13,6 @@
     <string name="title_activity_view_course_info">Course Details</string>
     <string name="title_activity_student_attendance">Student Attendance</string>
     <string name="late_setter_hint">Enter # mins to be late. Default is 10</string>
-
     <string-array name="course_analytics_list">
         <item>Student Attendance</item>
         <item>Student Timeliness</item>
