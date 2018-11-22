@@ -81,6 +81,9 @@ public class SignInActivity extends AppCompatActivity implements
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        myApplication = (MyApplication)getApplication();
+        myApplication.setFireBaseRef("https://cmp6901attendanceapp.firebaseio.com/");
+        ref = myApplication.getRef();
         //set up sign in button
         // [START config_signin]
         // Configure Google Sign In
@@ -138,7 +141,7 @@ public class SignInActivity extends AppCompatActivity implements
         // [START_EXCLUDE silent]
         //showProgressDialog();
         // [END_EXCLUDE]
-        final String email_str = acct.getEmail();
+        final String email_str = acct.getId();
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
