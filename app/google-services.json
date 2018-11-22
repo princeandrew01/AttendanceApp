@@ -31,6 +31,14 @@
           }
         },
         {
+          "client_id": "1017937634940-nfei5n7elgphu2c83vdlatf26fighki4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jevon.studentrollrecorder",
+            "certificate_hash": "5445dfbcb1cb80553257e5ce4aec639869a43844"
+          }
+        },
+        {
           "client_id": "1017937634940-b0lmcu307nd0kdmoo576i342qdj38r94.apps.googleusercontent.com",
           "client_type": 3
         }
