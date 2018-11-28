@@ -3,6 +3,8 @@ package com.jevon.studentrollrecorder.pojo;
 /**
  * Created by Shiva on 4/16/2016.
  */
+/**NIKITA IS TESTING A PUSH AND COMMIT */
+
 public class Attendee {
     int hr, min;
 
