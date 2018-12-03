@@ -3,7 +3,11 @@ package com.jevon.studentrollrecorder.helpers;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
+import java.util.StringTokenizer;
+
+
 
 /**
  * Created by jevon on 20-Apr-16.
@@ -49,4 +53,59 @@ public class TimeHelper {
     public static int getMilitaryTime(int hour, int min){
         return hour*100 + min;
     }
+
+    public static Date toDate(String dateStr){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE dd-MM-yy H", Locale.ENGLISH);
+        Date sessionDate = new Date();
+
+        try{
+            sessionDate = dateFormat.parse(dateStr);
+        }
+        catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return sessionDate;
+    }
+
+    public static String shortenDate(String longDate){
+        String date = "";
+        String token=null;
+        int tokenNum=1;
+
+        StringTokenizer stringTokenizer = new StringTokenizer(longDate,"-, ");
+
+        while(stringTokenizer.hasMoreTokens()){
+            token = stringTokenizer.nextToken();
+
+            if(tokenNum == 2){
+                date += token + "-";
+            }
+
+            else if(tokenNum == 3){
+                date += token + " ";
+            }
+
+            else if(tokenNum == 5) {
+                date += token;
+            }
+
+            tokenNum++;
+        }
+        return date;
+    }
+
+    public static int getStartHour(String date){
+        // consider replacing with String.split
+        StringTokenizer stringTokenizer = new StringTokenizer(date);
+        String token=null;
+
+        while(stringTokenizer.hasMoreTokens()){
+            token = stringTokenizer.nextToken();
+        }
+
+        return Integer.valueOf(token);
+    }
+
+
+
 }

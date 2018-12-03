@@ -24,6 +24,7 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.jevon.studentrollrecorder.helpers.FirebaseHelper;
 import com.jevon.studentrollrecorder.helpers.SortByDateHelper;
+import com.jevon.studentrollrecorder.helpers.TimeHelper;
 import com.jevon.studentrollrecorder.pojo.Attendee;
 import com.jevon.studentrollrecorder.pojo.Session;
 import com.jevon.studentrollrecorder.utils.Utils;
@@ -59,6 +60,8 @@ public class ViewCourseAnalytics extends AppCompatActivity implements OnChartVal
     private LineData data;
     private LineDataSet dataset;            // will be used for attendance entries
     private LineDataSet dataset2;            // will be used for lateness entries
+
+    private TimeHelper timeHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,19 +148,20 @@ public class ViewCourseAnalytics extends AppCompatActivity implements OnChartVal
     // this method will create the data points on the line chart from the sessions data
     private void createEntries(){
         int xCord=0;
-
+        timeHelper = new TimeHelper();  /* Reference TimeHelper */
         for(Session s : sessions){
             // add label of string version of date of this session
-            labels.add(shortenDate(s.getDate()));
+            labels.add(TimeHelper.shortenDate(s.getDate()));
 
             // add entry indicating number of students present at each session
-            entriesAttendance.add(new Entry((float)s.getAttendees().size(), xCord, toDate(s.getDate())));
+            entriesAttendance.add(new Entry((float)s.getAttendees().size(), xCord, TimeHelper.toDate(s.getDate())));
 
             // add entry indicating number of students late at each session
             // default late time is 10 mins after scheduled start
-            entriesLateness.add(new Entry((float)findNumLate(s.getAttendees(), lateMarker, s.getDate()), xCord++, toDate(s.getDate())));
+            entriesLateness.add(new Entry((float)findNumLate(s.getAttendees(), lateMarker, s.getDate()), xCord++, TimeHelper.toDate(s.getDate())));
         }
     }
+/* In TimeHelper.java
 
     private Date toDate(String dateStr){
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE dd-MM-yy H", Locale.ENGLISH);
@@ -197,13 +201,13 @@ public class ViewCourseAnalytics extends AppCompatActivity implements OnChartVal
             tokenNum++;
         }
         return date;
-    }
+    } */
 
     // determine the number of students that arrived late for a particular session
     private int findNumLate(HashMap<String, Attendee> map, int lateMarker, String date){
         int numLate=0;
-
-        int startHr = getStartHour(date);
+        timeHelper = new TimeHelper();  /* Reference TimeHelper */
+        int startHr = TimeHelper.getStartHour(date);
 
         Collection collection = map.values();
         Iterator iterator = collection.iterator();
@@ -229,7 +233,7 @@ public class ViewCourseAnalytics extends AppCompatActivity implements OnChartVal
 
         return numLate;
     }
-
+/* In TimeHelper.java
     public int getStartHour(String date){
         // consider replacing with String.split
         StringTokenizer stringTokenizer = new StringTokenizer(date);
@@ -241,7 +245,7 @@ public class ViewCourseAnalytics extends AppCompatActivity implements OnChartVal
 
         return Integer.valueOf(token);
     }
-
+*/
     public void onLateUpdate(View view){
         String valueEntered = lateSetting.getText().toString();
 

@@ -51,6 +51,8 @@ public class AddLecturesActivity extends AppCompatActivity {
     private static final String NONE = "none";
     private int startHr = -1, startMin = -1, endHr = -1, endMin = -1;
 
+    private TimeHelper timeHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,6 +99,7 @@ public class AddLecturesActivity extends AppCompatActivity {
     * If all fields are filled out and there is no clash
     *   then the course is added to a list to be pushed when u user clicked the save icon*/
     public void onClickAddLect(View v) {
+        timeHelper = new TimeHelper();  /* Reference TimeHelper */
         if (v.getId() == R.id.fab_save){
             if(day != null && startHr != -1 && startMin != -1 && endHr != -1 && endMin != -1){
                 if(TimeHelper.getMilitaryTime(endHr,endMin) - TimeHelper.getMilitaryTime(startHr,startMin) >= 100){
@@ -116,6 +119,7 @@ public class AddLecturesActivity extends AppCompatActivity {
     
     //check for clashes with other courses
     private String isClashing(int startHr, int endHr, int startMin, int endMin){
+        timeHelper = new TimeHelper();  /* Reference TimeHelper */
         if(courses.size() <= 0){
             Toast.makeText(this, "Could not check for clashes",Toast.LENGTH_LONG).show();
         }
@@ -187,6 +191,7 @@ public class AddLecturesActivity extends AppCompatActivity {
 
     private void showTimePicker(final int which){
         final Calendar c = Calendar.getInstance();
+        timeHelper = new TimeHelper();  /* Reference TimeHelper */
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int minute = c.get(Calendar.MINUTE);
         Dialog d = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
