@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.arch.lifecycle.ViewModelProviders;
+import android.arch.lifecycle.LiveData;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,11 +14,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import android.arch.lifecycle.Observer;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.firebase.client.annotations.Nullable;
 import com.jevon.studentrollrecorder.helpers.FirebaseHelper;
+import com.jevon.studentrollrecorder.observers.ViewCourseViewModel;
 import com.jevon.studentrollrecorder.pojo.Course;
 import com.jevon.studentrollrecorder.utils.Utils;
 
@@ -24,10 +29,11 @@ import java.util.ArrayList;
 
 /*Shows the current list of courses for the lecturer. Clicking one takes you to the list of options for the course*/
 
-public class ViewCoursesActivity extends AppCompatActivity {
+public class ViewCoursesActivity extends AppCompatActivity{
     private ListView lv_courses;
     private ArrayList<Course> courses;
     private ArrayAdapter<Course> adapter;
+    private static final String LOG_TAG = "ViewCourseActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +77,49 @@ public class ViewCoursesActivity extends AppCompatActivity {
     }
 
     public void getCourses(){
+        ViewCourseViewModel viewModel = ViewModelProviders.of(this).get(ViewCourseViewModel.class);
+        LiveData<ArrayList<Course>> liveData = viewModel.getCourseLiveData();
+
+        liveData.observe(this, new Observer<ArrayList<Course>>(){
+            @Override
+            public void onChanged(@Nullable ArrayList<Course> courses) {
+                if (courses.isEmpty() ){
+                    Log.i(LOG_TAG, "No Courses found");
+                } else {
+                    adapter.clear();
+                    adapter.addAll(courses);
+                }
+            }
+        });
+
+    }
+
+    public void getCourses3(){
+        ViewCourseViewModel viewModel = ViewModelProviders.of(this).get(ViewCourseViewModel.class);
+        LiveData<DataSnapshot> liveData = viewModel.getDataSnapshotLiveData();
+
+        liveData.observe(this, new Observer<DataSnapshot>() {
+            @Override
+            public void onChanged(@Nullable DataSnapshot snapshot) {
+                if (snapshot != null) {
+                    adapter.clear();
+                    // update the UI here with values in the snapshot
+                    if(snapshot.hasChildren()){
+                        for (DataSnapshot coursesSnapshot: snapshot.getChildren()) {
+                            Course c = coursesSnapshot.getValue(Course.class);
+                            Log.i(LOG_TAG, "Course received: " + c.toString());
+                            adapter.add(c);
+                        }
+                    }
+                } else {
+                    Log.i(LOG_TAG, "No Courses found");
+                }
+            }
+        });
+    }
+
+    // Old Code AAS: 2018-12-01
+    public void getCourses2(){
         FirebaseHelper fh = new FirebaseHelper();
         Firebase ref_id = fh.getRef_id();
         ref_id.addValueEventListener(new ValueEventListener() {
