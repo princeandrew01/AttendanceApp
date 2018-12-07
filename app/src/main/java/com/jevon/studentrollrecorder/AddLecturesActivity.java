@@ -50,8 +50,7 @@ public class AddLecturesActivity extends AppCompatActivity {
     private static final String TAG = "Add lecture activity";
     private static final String NONE = "none";
     private int startHr = -1, startMin = -1, endHr = -1, endMin = -1;
-
-    private TimeHelper timeHelper;
+    private TimeHelper timeHelper; /* Reference TimeHelper */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,10 +98,9 @@ public class AddLecturesActivity extends AppCompatActivity {
     * If all fields are filled out and there is no clash
     *   then the course is added to a list to be pushed when u user clicked the save icon*/
     public void onClickAddLect(View v) {
-        timeHelper = new TimeHelper();  /* Reference TimeHelper */
         if (v.getId() == R.id.fab_save){
             if(day != null && startHr != -1 && startMin != -1 && endHr != -1 && endMin != -1){
-                if(TimeHelper.getMilitaryTime(endHr,endMin) - TimeHelper.getMilitaryTime(startHr,startMin) >= 100){
+                if(timeHelper.getMilitaryTime(endHr,endMin) - timeHelper.getMilitaryTime(startHr,startMin) >= 100){
                     String clashedWith = isClashing(startHr, endHr, startMin, endMin);
                     if(clashedWith.equals(NONE)){
                         lectures.add(0,new Lecture(startHr,startMin,endHr,endMin,day));
@@ -119,23 +117,22 @@ public class AddLecturesActivity extends AppCompatActivity {
     
     //check for clashes with other courses
     private String isClashing(int startHr, int endHr, int startMin, int endMin){
-        timeHelper = new TimeHelper();  /* Reference TimeHelper */
         if(courses.size() <= 0){
             Toast.makeText(this, "Could not check for clashes",Toast.LENGTH_LONG).show();
         }
         else{
-            int proposed_starttime = TimeHelper.getMilitaryTime(startHr, startMin);
-            int proposed_endtime = TimeHelper.getMilitaryTime(endHr, endMin);
+            int proposed_starttime = timeHelper.getMilitaryTime(startHr, startMin);
+            int proposed_endtime = timeHelper.getMilitaryTime(endHr, endMin);
             for(Course c: courses){
                 HashMap<String,Lecture> lectures = c.getLecturess();
                 if(lectures!=null)
                     for(Lecture l: lectures.values()){
-                        int lect_start = TimeHelper.getMilitaryTime(l.getStartHr(), l.getStartMin());
-                        int lect_end = TimeHelper.getMilitaryTime(l.getEndHr(), l.getEndMin());
+                        int lect_start = timeHelper.getMilitaryTime(l.getStartHr(), l.getStartMin());
+                        int lect_end = timeHelper.getMilitaryTime(l.getEndHr(), l.getEndMin());
                         if(lect_start <= proposed_starttime && proposed_starttime < lect_end && l.getDay().equals(day))
-                            return c.getCourseCode() + "[" + TimeHelper.formatTime(l.getStartHr(),l.getStartMin()) + " - " + TimeHelper.formatTime(l.getEndHr(),l.getEndMin()) +"]";
+                            return c.getCourseCode() + "[" + timeHelper.formatTime(l.getStartHr(),l.getStartMin()) + " - " + timeHelper.formatTime(l.getEndHr(),l.getEndMin()) +"]";
                         if(proposed_starttime <= lect_start && lect_start < proposed_endtime && l.getDay().equals(day))
-                            return c.getCourseCode() + "[" + TimeHelper.formatTime(l.getStartHr(),l.getStartMin()) + " - " + TimeHelper.formatTime(l.getEndHr(),l.getEndMin()) +"]";
+                            return c.getCourseCode() + "[" + timeHelper.formatTime(l.getStartHr(),l.getStartMin()) + " - " + timeHelper.formatTime(l.getEndHr(),l.getEndMin()) +"]";
                     }
             }
         }
@@ -191,7 +188,6 @@ public class AddLecturesActivity extends AppCompatActivity {
 
     private void showTimePicker(final int which){
         final Calendar c = Calendar.getInstance();
-        timeHelper = new TimeHelper();  /* Reference TimeHelper */
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int minute = c.get(Calendar.MINUTE);
         Dialog d = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
@@ -200,12 +196,12 @@ public class AddLecturesActivity extends AppCompatActivity {
                 if(which == 1){
                     startHr = hourOfDay;
                     startMin = minute;
-                    tv_start.setText(TimeHelper.formatTime(hourOfDay,minute));
+                    tv_start.setText(timeHelper.formatTime(hourOfDay,minute));
                 }
                 else if(which == 2) {
                     endHr = hourOfDay;
                     endMin = minute;
-                    tv_end.setText(TimeHelper.formatTime(hourOfDay, minute));
+                    tv_end.setText(timeHelper.formatTime(hourOfDay, minute));
                 }
             }
         }, hour, minute, false);
