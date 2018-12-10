@@ -20,15 +20,17 @@ public class Punctuality implements Calculations {
     private String studentId;
     private int lateTime = 15;
 
-    public Punctuality(String studentId) {
-        this.studentId = studentId; //bundle.getString(Utils.ID);
+    public Punctuality() {
+
     }//
 
     public void setCourse(Course course){
         this.course=course;
 
     }//setCourses
-
+    public void setStudentID(String studentId){
+        this.studentId = studentId;
+    }
     public int getlateSessions(){ return this.totallateSessions; }
 
     public int getearlySessions(){ return this.totalearlySessions; }

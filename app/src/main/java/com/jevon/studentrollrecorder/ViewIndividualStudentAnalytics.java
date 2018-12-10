@@ -26,6 +26,7 @@ import com.jevon.studentrollrecorder.pojo.Course;
 import com.jevon.studentrollrecorder.pojo.Lecture;
 import com.jevon.studentrollrecorder.pojo.Session;
 import com.jevon.studentrollrecorder.utils.Attendance;
+import com.jevon.studentrollrecorder.utils.Punctuality;
 import com.jevon.studentrollrecorder.utils.Utils;
 
 import java.sql.Time;
@@ -60,6 +61,8 @@ public class ViewIndividualStudentAnalytics extends AppCompatActivity {
     PieChart punctualityPieChart = null;
 
     private ChartRendering cr;
+    private ChartRendering punctChart;
+    private  Statistics stats;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +82,9 @@ public class ViewIndividualStudentAnalytics extends AppCompatActivity {
         }
 
         /* Draw charts. */
+        stats = new Statistics();
         cr = new ChartRendering();
+        punctChart= new ChartRendering();
 
         /*ChartRendering cr1 = new ChartRendering();
         cr1.setPunctPieChart((PieChart) findViewById(R.id.punctuality_graph));
@@ -107,9 +112,9 @@ public class ViewIndividualStudentAnalytics extends AppCompatActivity {
     }
 
     public void attendanceCalculations(){
-        Statistics stats = new Statistics();
+
         cr.setPieChart((PieChart) findViewById(R.id.attendance_graph));
-        this.attendancePieChart = cr.drawAttendancePieChart((Attendance) stats.getcalculations("Attendance",studentId,course.getSessions()));
+        this.attendancePieChart = cr.drawAttendancePieChart((Attendance) stats.getcalculations("Attendance",studentId, course));
     }
 
     public void attendanceCalculations2(){
@@ -276,7 +281,14 @@ public class ViewIndividualStudentAnalytics extends AppCompatActivity {
         });
     }
 
+    //new punctualityCalculations
     public void punctualityCalculations(){
+        punctChart.setPieChart((PieChart) findViewById(R.id.punctuality_graph));
+        this.punctualityPieChart = punctChart.drawPunctualityPieChart((Punctuality)stats.getcalculations("Punctuality",studentId, course));
+
+    }//end NEW punctualityCalculations
+
+    public void punctualityCalculations2(){
 
         /* initialize data. */
         lateSessions = 0;
@@ -362,6 +374,7 @@ public class ViewIndividualStudentAnalytics extends AppCompatActivity {
         updatePunctualityPieChart();
     }
 
+    //nrl punctuality caluclations called here
     public void updateLateGraph(View view){
 
         /* get edit text view. */
@@ -377,6 +390,6 @@ public class ViewIndividualStudentAnalytics extends AppCompatActivity {
         }
 
         /* update chart. */
-        punctualityCalculations();
+        //punctualityCalculations();
     }
 }

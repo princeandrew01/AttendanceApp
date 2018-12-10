@@ -1,33 +1,17 @@
 package com.jevon.studentrollrecorder.facade;
 
-import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
-import android.text.SpannableString;
-
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.LimitLine;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.jevon.studentrollrecorder.R;
-import com.jevon.studentrollrecorder.factory.Statistics;
-import com.jevon.studentrollrecorder.helpers.SortByDateHelper;
-import com.jevon.studentrollrecorder.interfaces.Calculations;
-import com.jevon.studentrollrecorder.pojo.Session;
 import com.jevon.studentrollrecorder.utils.Attendance;
 import com.jevon.studentrollrecorder.utils.Pie;
-
+import com.jevon.studentrollrecorder.utils.Punctuality;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 
 /** facade solution*/
 
@@ -91,10 +75,12 @@ public class ChartRendering {
         return this.attendancePieChart;
     }
 
-    public PieChart drawPunctualityPieChart(){
+    public PieChart drawPunctualityPieChart(Punctuality calcs){
         Pie pieCharts = new Pie("Punctuality Percentage","Breakdown of Student Punctuality",punctualityPieChart);
         String a = pieCharts.getSource();
         String d = pieCharts.getDescription();
+        this.earlySessions=calcs.getearlySessions();
+        this.lateSessions=calcs.getlateSessions();
         this.punctualityPieChart = pieCharts.draw(a,d);
         ArrayList<Entry> entries = pieCharts.getEntries();
         ArrayList<String> labels = pieCharts.getLabels();

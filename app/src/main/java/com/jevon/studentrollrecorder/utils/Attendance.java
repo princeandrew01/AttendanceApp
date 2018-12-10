@@ -1,26 +1,15 @@
 package com.jevon.studentrollrecorder.utils;
 
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
-import com.github.mikephil.charting.data.Entry;
-import com.jevon.studentrollrecorder.helpers.FirebaseHelper;
-import com.jevon.studentrollrecorder.pojo.Attendee;
-import com.jevon.studentrollrecorder.pojo.Course;
-import com.jevon.studentrollrecorder.pojo.Lecture;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate;
-import com.jevon.studentrollrecorder.pojo.Session;
 import com.jevon.studentrollrecorder.interfaces.Calculations;
+import com.jevon.studentrollrecorder.pojo.Course;
+import com.jevon.studentrollrecorder.pojo.Session;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Attendance implements Calculations{
 
-    private HashMap<String, Session> sessions;
+   // private HashMap<String, Session> sessions;
+    private Course course;
     private int totalSessions;
     private int totalSessionsNotAttended;
     private int totalSessionsAttended;
@@ -34,10 +23,14 @@ public class Attendance implements Calculations{
     public void setStudentID(String studentId){
         this.studentId = studentId;
     }
-    public void setSessions(HashMap<String, Session> sessions){
+   /** public void setSessions(HashMap<String, Session> sessions){
         this.sessions=sessions;
 
-    }//setSessions
+    }//setSessions*/
+    public void setCourse(Course course){
+        this.course=course;
+
+    }//setCourses
 
     public int getTotalSessionsAttended(){
         return this.totalSessionsAttended;
@@ -55,10 +48,10 @@ public class Attendance implements Calculations{
         this.totalSessionsAttended = 0;
 
              /* checks the total number of sessions stored in the hashmap. */
-        this.totalSessions =  this.sessions.size();
+        this.totalSessions =  this.course.getSessions().size();
 
         /* iterate over each session. */
-        for(HashMap.Entry<String, Session> currentSession : this.sessions.entrySet()){
+        for(HashMap.Entry<String, Session> currentSession : this.course.getSessions().entrySet()){
 
             /* check if the student we are interested in attended this session. */
             if(currentSession.getValue().getAttendees().get(studentId) != null){
