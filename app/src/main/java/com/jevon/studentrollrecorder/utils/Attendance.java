@@ -31,10 +31,6 @@ public class Attendance implements Calculations{
     public Attendance(){
 
     }
-    public Attendance(String studentId) {
-        this.studentId = studentId; //bundle.getString(Utils.ID);
-    }
-
     public void setStudentID(String studentId){
         this.studentId = studentId;
     }

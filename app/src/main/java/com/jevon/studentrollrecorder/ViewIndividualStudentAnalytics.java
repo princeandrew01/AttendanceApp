@@ -19,11 +19,13 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.jevon.studentrollrecorder.facade.ChartRendering;
+import com.jevon.studentrollrecorder.factory.Statistics;
 import com.jevon.studentrollrecorder.helpers.FirebaseHelper;
 import com.jevon.studentrollrecorder.pojo.Attendee;
 import com.jevon.studentrollrecorder.pojo.Course;
 import com.jevon.studentrollrecorder.pojo.Lecture;
 import com.jevon.studentrollrecorder.pojo.Session;
+import com.jevon.studentrollrecorder.utils.Attendance;
 import com.jevon.studentrollrecorder.utils.Utils;
 
 import java.sql.Time;
@@ -57,6 +59,8 @@ public class ViewIndividualStudentAnalytics extends AppCompatActivity {
             //= null;
     PieChart punctualityPieChart = null;
 
+    private ChartRendering cr;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,16 +79,14 @@ public class ViewIndividualStudentAnalytics extends AppCompatActivity {
         }
 
         /* Draw charts. */
-        ChartRendering cr = new ChartRendering();
-        cr.setPieChart((PieChart) findViewById(R.id.attendance_graph));
-        this.attendancePieChart = cr.drawAttendancePieChart(studentId);
+        cr = new ChartRendering();
 
-        ChartRendering cr1 = new ChartRendering();
+        /*ChartRendering cr1 = new ChartRendering();
         cr1.setPunctPieChart((PieChart) findViewById(R.id.punctuality_graph));
         this.punctualityPieChart = cr1.drawPunctualityPieChart();
         //drawAttendancePieChart();
         //drawPunctualityPieChart();
-
+        */
         /* get the course from firebase. */
         getCourse();
 
@@ -105,6 +107,12 @@ public class ViewIndividualStudentAnalytics extends AppCompatActivity {
     }
 
     public void attendanceCalculations(){
+        Statistics stats = new Statistics();
+        cr.setPieChart((PieChart) findViewById(R.id.attendance_graph));
+        this.attendancePieChart = cr.drawAttendancePieChart((Attendance) stats.getcalculations("Attendance",studentId,course.getSessions()));
+    }
+
+    public void attendanceCalculations2(){
 
         /* initialize variables.  */
         this.totalSessions  = 0;
@@ -255,7 +263,8 @@ public class ViewIndividualStudentAnalytics extends AppCompatActivity {
 
                 if(course.getSessions() != null && course.getLecturess() != null){
                     attendanceCalculations();
-                    punctualityCalculations();
+                    //punctualityCalculations();
+                    //this.attendancePieChart = cr.drawAttendancePieChart(studentId);
                 }
 
             }

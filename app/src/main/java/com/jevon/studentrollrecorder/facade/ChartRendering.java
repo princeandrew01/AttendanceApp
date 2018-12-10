@@ -20,12 +20,14 @@ import com.jevon.studentrollrecorder.R;
 import com.jevon.studentrollrecorder.factory.Statistics;
 import com.jevon.studentrollrecorder.helpers.SortByDateHelper;
 import com.jevon.studentrollrecorder.interfaces.Calculations;
+import com.jevon.studentrollrecorder.pojo.Session;
 import com.jevon.studentrollrecorder.utils.Attendance;
 import com.jevon.studentrollrecorder.utils.Pie;
 
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 
 /** facade solution*/
 
@@ -43,10 +45,8 @@ public class ChartRendering {
     String source;
     LineChart lineChart;
     long numStudents;
-    Statistics stats;
 
     public ChartRendering(){
-        stats = new Statistics();
     }
 
     public void setPieChart (PieChart pie) {
@@ -61,11 +61,9 @@ public class ChartRendering {
         this.lineChart = line;
     }
 
-    public PieChart drawAttendancePieChart(String studentID){
-
-        Calculations c = (Attendance) stats.getcalculations("Attendance", studentID);
-        this.totalSessionsAttended = ((Attendance) c).getTotalSessionsAttended();
-        this.totalSessionsNotAttended = ((Attendance) c).getTotalSessionsNotAttended();
+    public PieChart drawAttendancePieChart(Attendance calcs){
+        this.totalSessionsAttended = calcs.getTotalSessionsAttended();
+        this.totalSessionsNotAttended = calcs.getTotalSessionsNotAttended();
         Pie pieCharts = new Pie("Percentage Attendance","Breakdown of Student Attendance",attendancePieChart);
         String a = pieCharts.getSource();
         String d = pieCharts.getDescription();
@@ -86,6 +84,9 @@ public class ChartRendering {
 
         PieData data = new PieData(labels, dataset);
         this.attendancePieChart.setData(data);
+        this.attendancePieChart.notifyDataSetChanged();
+        this.attendancePieChart.invalidate();
+        this.attendancePieChart.animateY(1500);
 
         return this.attendancePieChart;
     }
