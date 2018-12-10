@@ -28,6 +28,7 @@ public class FirebaseHelper {
     private String uid;
     private Firebase ref, ref_id;
     private MyApplication myApplication;
+    private TimeHelper timeHelper; /* Reference TimeHelper */
 
     public FirebaseHelper(){
         myApplication = MyApplication.getInstance();
@@ -63,8 +64,8 @@ public class FirebaseHelper {
 
     //records a student as present in the DB
     public  void markAsPresent(String courseCode, String session_id, String student_id, String student_name){
-        int hour = TimeHelper.getCurrentHour();
-        int minute = TimeHelper.getCurrentMinute();
+        int hour = timeHelper.getCurrentHour();
+        int minute = timeHelper.getCurrentMinute();
 
         Attendee a = new Attendee(hour,minute);
         ObjectMapper m = new ObjectMapper();
