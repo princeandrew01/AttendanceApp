@@ -18,6 +18,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.jevon.studentrollrecorder.facade.ChartRendering;
 import com.jevon.studentrollrecorder.helpers.FirebaseHelper;
 import com.jevon.studentrollrecorder.pojo.Attendee;
 import com.jevon.studentrollrecorder.pojo.Course;
@@ -52,7 +53,8 @@ public class ViewIndividualStudentAnalytics extends AppCompatActivity {
     /* set default late time for second graph as 15 mins. */
     private int lateTime = 15;
 
-    PieChart attendancePieChart = null;
+    PieChart attendancePieChart;
+            //= null;
     PieChart punctualityPieChart = null;
 
     @Override
@@ -73,8 +75,15 @@ public class ViewIndividualStudentAnalytics extends AppCompatActivity {
         }
 
         /* Draw charts. */
-        drawAttendancePieChart();
-        drawPunctualityPieChart();
+        ChartRendering cr = new ChartRendering();
+        cr.setPieChart((PieChart) findViewById(R.id.attendance_graph));
+        this.attendancePieChart = cr.drawAttendancePieChart();
+
+        ChartRendering cr1 = new ChartRendering();
+        cr1.setPunctPieChart((PieChart) findViewById(R.id.punctuality_graph));
+        this.punctualityPieChart = cr1.drawPunctualityPieChart();
+        //drawAttendancePieChart();
+        //drawPunctualityPieChart();
 
         /* get the course from firebase. */
         getCourse();
@@ -145,7 +154,7 @@ public class ViewIndividualStudentAnalytics extends AppCompatActivity {
         this.attendancePieChart.animateY(1500);
     }
 
-    public void drawAttendancePieChart(){
+   public void drawAttendancePieChart(){
 
         /* text in the center of graph. */
         SpannableString centerText = new SpannableString("Percentage Attendance");

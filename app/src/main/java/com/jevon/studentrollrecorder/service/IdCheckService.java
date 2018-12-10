@@ -36,6 +36,7 @@ public class IdCheckService extends Service {
     private String student_name;
     private ArrayList<Course> courses;
     private final IBinder iBinder = new IdServiceBinder(this);
+    private TimeHelper timeHelper; /* Reference TimeHelper */
 
     public IdCheckService() {
     }
@@ -45,8 +46,8 @@ public class IdCheckService extends Service {
         Log.i(TAG, "running service for "+ student_id);
 
         //get curr day and hour. required for checking for current course
-        currentHour = TimeHelper.getCurrentHour();
-        today = TimeHelper.getCurrDay();
+        currentHour = timeHelper.getCurrentHour();
+        today = timeHelper.getCurrDay();
 
         Log.i(TAG, "today: " + today+"hr: "+currentHour);
         scanned_id = student_id;
@@ -62,7 +63,7 @@ public class IdCheckService extends Service {
             if(lectures!=null)
                 for (Lecture lecture : lectures.values()) {
                     if(currentHour >= lecture.getStartHr() && currentHour <= lecture.getEndHr() && lecture.getDay().equalsIgnoreCase(today)){
-                        currSession = new LectureSession( c.getCourseCode(), TimeHelper.getIDTimeStamp(lecture.getStartHr()) );
+                        currSession = new LectureSession( c.getCourseCode(), timeHelper.getIDTimeStamp(lecture.getStartHr()) );
                     }
                 }
             else

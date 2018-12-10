@@ -7,6 +7,7 @@ import com.jevon.studentrollrecorder.helpers.TimeHelper;
  * Created by jevon on 10-Apr-16.
  */
 public class Lecture {
+    private TimeHelper timeHelper; /* Reference TimeHelper */
     private int startHr, startMin, endHr, endMin;
     private String day;
 
@@ -22,7 +23,7 @@ public class Lecture {
 
     @Override
     public String toString() {
-        return day+ "  "+ TimeHelper.formatTime(startHr,startMin) + " - " + TimeHelper.formatTime(endHr,endMin);
+        return day+ "  "+ timeHelper.formatTime(startHr,startMin) + " - " + timeHelper.formatTime(endHr,endMin);
     }
 
 

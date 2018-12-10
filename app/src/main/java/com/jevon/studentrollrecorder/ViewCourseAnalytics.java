@@ -24,6 +24,7 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.jevon.studentrollrecorder.helpers.FirebaseHelper;
 import com.jevon.studentrollrecorder.helpers.SortByDateHelper;
+import com.jevon.studentrollrecorder.helpers.TimeHelper;
 import com.jevon.studentrollrecorder.pojo.Attendee;
 import com.jevon.studentrollrecorder.pojo.Session;
 import com.jevon.studentrollrecorder.utils.Utils;
@@ -59,6 +60,8 @@ public class ViewCourseAnalytics extends AppCompatActivity implements OnChartVal
     private LineData data;
     private LineDataSet dataset;            // will be used for attendance entries
     private LineDataSet dataset2;            // will be used for lateness entries
+    private TimeHelper timeHelper; /* Reference TimeHelper */
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -145,65 +148,24 @@ public class ViewCourseAnalytics extends AppCompatActivity implements OnChartVal
     // this method will create the data points on the line chart from the sessions data
     private void createEntries(){
         int xCord=0;
-
         for(Session s : sessions){
             // add label of string version of date of this session
-            labels.add(shortenDate(s.getDate()));
+            labels.add(timeHelper.shortenDate(s.getDate()));
 
             // add entry indicating number of students present at each session
-            entriesAttendance.add(new Entry((float)s.getAttendees().size(), xCord, toDate(s.getDate())));
+            entriesAttendance.add(new Entry((float)s.getAttendees().size(), xCord, timeHelper.toDate(s.getDate())));
 
             // add entry indicating number of students late at each session
             // default late time is 10 mins after scheduled start
-            entriesLateness.add(new Entry((float)findNumLate(s.getAttendees(), lateMarker, s.getDate()), xCord++, toDate(s.getDate())));
+            entriesLateness.add(new Entry((float)findNumLate(s.getAttendees(), lateMarker, s.getDate()), xCord++, timeHelper.toDate(s.getDate())));
         }
     }
 
-    private Date toDate(String dateStr){
-        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE dd-MM-yy H", Locale.ENGLISH);
-        Date sessionDate = new Date();
-
-        try{
-            sessionDate = dateFormat.parse(dateStr);
-        }
-        catch (Exception e){
-            System.out.println(e.getMessage());
-        }
-        return sessionDate;
-    }
-
-    private String shortenDate(String longDate){
-        String date = "";
-        String token=null;
-        int tokenNum=1;
-
-        StringTokenizer stringTokenizer = new StringTokenizer(longDate,"-, ");
-
-        while(stringTokenizer.hasMoreTokens()){
-            token = stringTokenizer.nextToken();
-
-            if(tokenNum == 2){
-                date += token + "-";
-            }
-
-            else if(tokenNum == 3){
-                date += token + " ";
-            }
-
-            else if(tokenNum == 5) {
-                date += token;
-            }
-
-            tokenNum++;
-        }
-        return date;
-    }
 
     // determine the number of students that arrived late for a particular session
     private int findNumLate(HashMap<String, Attendee> map, int lateMarker, String date){
         int numLate=0;
-
-        int startHr = getStartHour(date);
+        int startHr = timeHelper.getStartHour(date);
 
         Collection collection = map.values();
         Iterator iterator = collection.iterator();
@@ -228,18 +190,6 @@ public class ViewCourseAnalytics extends AppCompatActivity implements OnChartVal
         }
 
         return numLate;
-    }
-
-    public int getStartHour(String date){
-        // consider replacing with String.split
-        StringTokenizer stringTokenizer = new StringTokenizer(date);
-        String token=null;
-
-        while(stringTokenizer.hasMoreTokens()){
-            token = stringTokenizer.nextToken();
-        }
-
-        return Integer.valueOf(token);
     }
 
     public void onLateUpdate(View view){
