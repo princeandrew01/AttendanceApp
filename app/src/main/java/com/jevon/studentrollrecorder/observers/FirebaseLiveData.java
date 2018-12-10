@@ -10,7 +10,7 @@ import com.firebase.client.FirebaseError;
 
 
 public class FirebaseLiveData extends LiveData<DataSnapshot> {
-    private static final String LOG_TAG = "FirebaseQueryLiveData";
+    private static final String LOG_TAG = "FirebaseQueryLiveData"; 
 
     private final Query query;
     private final MyValueEventListener listener = new MyValueEventListener();
