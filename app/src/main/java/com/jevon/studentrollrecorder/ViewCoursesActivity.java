@@ -85,6 +85,7 @@ public class ViewCoursesActivity extends AppCompatActivity{
             public void onChanged(@Nullable ArrayList<Course> courses) {
                 if (courses.isEmpty() ){
                     Log.i(LOG_TAG, "No Courses found");
+                    Toast.makeText(ViewCoursesActivity.this,"No courses found on your account",Toast.LENGTH_LONG).show();
                 } else {
                     adapter.clear();
                     adapter.addAll(courses);
