@@ -13,7 +13,7 @@ import com.jevon.studentrollrecorder.helpers.FirebaseHelper;
 
 import java.util.ArrayList;
 
-public class ViewCourseViewModel extends ViewModel {
+public class ViewCourseViewModel extends ViewModel { 
     private final static FirebaseHelper firebaseHelper = new FirebaseHelper();
     private final static Firebase ref_id = firebaseHelper.getRef_id();
 
