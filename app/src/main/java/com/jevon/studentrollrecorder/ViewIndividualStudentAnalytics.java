@@ -268,7 +268,7 @@ public class ViewIndividualStudentAnalytics extends AppCompatActivity {
 
                 if(course.getSessions() != null && course.getLecturess() != null){
                     attendanceCalculations();
-                    //punctualityCalculations();
+                    punctualityCalculations();
                     //this.attendancePieChart = cr.drawAttendancePieChart(studentId);
                 }
 
