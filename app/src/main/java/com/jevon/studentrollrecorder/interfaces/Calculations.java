@@ -1,4 +1,8 @@
 package com.jevon.studentrollrecorder.interfaces;
 /**name updated*/
-public class Calculations {
-}
+
+public interface Calculations {
+
+    void Calculate();
+
+}//end interface
