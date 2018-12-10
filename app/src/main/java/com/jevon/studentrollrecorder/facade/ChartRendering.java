@@ -17,7 +17,10 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.jevon.studentrollrecorder.R;
+import com.jevon.studentrollrecorder.factory.Statistics;
 import com.jevon.studentrollrecorder.helpers.SortByDateHelper;
+import com.jevon.studentrollrecorder.interfaces.Calculations;
+import com.jevon.studentrollrecorder.utils.Attendance;
 import com.jevon.studentrollrecorder.utils.Pie;
 
 
@@ -40,6 +43,11 @@ public class ChartRendering {
     String source;
     LineChart lineChart;
     long numStudents;
+    Statistics stats;
+
+    public ChartRendering(){
+        stats = new Statistics();
+    }
 
     public void setPieChart (PieChart pie) {
         this.attendancePieChart = pie;
@@ -53,7 +61,11 @@ public class ChartRendering {
         this.lineChart = line;
     }
 
-    public PieChart drawAttendancePieChart(){
+    public PieChart drawAttendancePieChart(String studentID){
+
+        Calculations c = (Attendance) stats.getcalculations("Attendance", studentID);
+        this.totalSessionsAttended = ((Attendance) c).getTotalSessionsAttended();
+        this.totalSessionsNotAttended = ((Attendance) c).getTotalSessionsNotAttended();
         Pie pieCharts = new Pie("Percentage Attendance","Breakdown of Student Attendance",attendancePieChart);
         String a = pieCharts.getSource();
         String d = pieCharts.getDescription();

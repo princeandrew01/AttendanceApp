@@ -10,12 +10,12 @@ import com.jevon.studentrollrecorder.interfaces.Calculations;
 
 public class Statistics {
 
-    public Calculations getcalculations(String caltype){
+    public Calculations getcalculations(String caltype, String studentID){
         if (caltype == null){
             return null;
         }//end if
         if (caltype.equalsIgnoreCase("Attendance")){
-            //return new Attendance();
+            return new Attendance(studentID);
         }//get calculation for attendance
         else if (caltype.equalsIgnoreCase("Punctuality")){
           // return new Punctuality();

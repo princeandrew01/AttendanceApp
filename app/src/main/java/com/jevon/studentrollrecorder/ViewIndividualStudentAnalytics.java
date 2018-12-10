@@ -77,7 +77,7 @@ public class ViewIndividualStudentAnalytics extends AppCompatActivity {
         /* Draw charts. */
         ChartRendering cr = new ChartRendering();
         cr.setPieChart((PieChart) findViewById(R.id.attendance_graph));
-        this.attendancePieChart = cr.drawAttendancePieChart();
+        this.attendancePieChart = cr.drawAttendancePieChart(studentId);
 
         ChartRendering cr1 = new ChartRendering();
         cr1.setPunctPieChart((PieChart) findViewById(R.id.punctuality_graph));
