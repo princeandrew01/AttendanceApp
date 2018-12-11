@@ -75,10 +75,10 @@ public class Pie implements Chart{
         this.p.setCenterText(centerText);
         this.p.setUsePercentValues(true);
         this.p.setDescription(d);
-        this.p.notifyDataSetChanged();
+        /*this.p.notifyDataSetChanged();
         this.p.invalidate();
         this.p.animateY(1500);
-
+        */
         return p;
     }
 

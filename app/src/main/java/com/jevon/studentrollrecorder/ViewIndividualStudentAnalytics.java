@@ -283,7 +283,7 @@ public class ViewIndividualStudentAnalytics extends AppCompatActivity {
 
     //new punctualityCalculations
     public void punctualityCalculations(){
-        punctChart.setPieChart((PieChart) findViewById(R.id.punctuality_graph));
+        punctChart.setPunctPieChart((PieChart) findViewById(R.id.punctuality_graph));
         this.punctualityPieChart = punctChart.drawPunctualityPieChart((Punctuality)stats.getcalculations("Punctuality",studentId, course));
 
     }//end NEW punctualityCalculations

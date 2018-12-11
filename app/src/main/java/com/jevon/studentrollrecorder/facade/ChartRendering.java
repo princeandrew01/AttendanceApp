@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 public class ChartRendering {
     PieChart attendancePieChart;
-    PieChart punctualityPieChart = null;
+    PieChart punctualityPieChart;
     private int earlySessions;
     private int lateSessions;
     private int totalSessionsAttended = 0;
