@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.arch.lifecycle.ViewModelProviders;
 import android.arch.lifecycle.LiveData;
 import android.util.Log;
 import android.view.View;
@@ -15,13 +14,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import android.arch.lifecycle.Observer;
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
-import com.firebase.client.annotations.Nullable;
-import com.jevon.studentrollrecorder.helpers.FirebaseHelper;
-import com.jevon.studentrollrecorder.observers.ViewCourseViewModel;
+import com.jevon.studentrollrecorder.observers.ViewCourse;
 import com.jevon.studentrollrecorder.pojo.Course;
 import com.jevon.studentrollrecorder.utils.Utils;
 
@@ -77,26 +70,26 @@ public class ViewCoursesActivity extends AppCompatActivity{
     }
 
     public void getCourses(){
-        ViewCourseViewModel viewModel = ViewModelProviders.of(this).get(ViewCourseViewModel.class);
+        ViewCourse viewModel = new ViewCourse();//ViewModelProviders.of(this).get(ViewCourse.class);
         LiveData<ArrayList<Course>> liveData = viewModel.getCourseLiveData();
 
         liveData.observe(this, new Observer<ArrayList<Course>>(){
             @Override
-            public void onChanged(@Nullable ArrayList<Course> courses) {
-                if (courses.isEmpty() ){
-                    Log.i(LOG_TAG, "No Courses found");
-                    Toast.makeText(ViewCoursesActivity.this,"No courses found on your account",Toast.LENGTH_LONG).show();
-                } else {
-                    adapter.clear();
-                    adapter.addAll(courses);
-                }
+            public void onChanged(ArrayList<Course> courses) {
+            if (courses.isEmpty() ){
+                Log.i(LOG_TAG, "No Courses found");
+                Toast.makeText(ViewCoursesActivity.this,"No courses found on your account",Toast.LENGTH_LONG).show();
+            } else {
+                adapter.clear();
+                adapter.addAll(courses);
+            }
             }
         });
 
     }
 
-    public void getCourses3(){
-        ViewCourseViewModel viewModel = ViewModelProviders.of(this).get(ViewCourseViewModel.class);
+   /* public void getCourses3(){
+        ViewCourse viewModel = ViewModelProviders.of(this).get(ViewCourse.class);
         LiveData<DataSnapshot> liveData = viewModel.getDataSnapshotLiveData();
 
         liveData.observe(this, new Observer<DataSnapshot>() {
@@ -117,10 +110,10 @@ public class ViewCoursesActivity extends AppCompatActivity{
                 }
             }
         });
-    }
+    }*/
 
     // Old Code AAS: 2018-12-01
-    public void getCourses2(){
+    /*public void getCourses2(){
         FirebaseHelper fh = new FirebaseHelper();
         Firebase ref_id = fh.getRef_id();
         ref_id.addValueEventListener(new ValueEventListener() {
@@ -142,6 +135,6 @@ public class ViewCoursesActivity extends AppCompatActivity{
                 System.out.println("The read failed: " + error.getMessage());
             }
         });
-    }
+    }*/
 
 }
