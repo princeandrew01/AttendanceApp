@@ -20,5 +20,6 @@ public final class Utils {
     public static final String SCANNED_ID = "scannedID";
     public static final String STUDENTS = "students";
     public static final String ATTENDEES="attendees";
+    public static final String FIREBASE_URL = "https://cmp6901attendanceapp.firebaseio.com/";
 
 }

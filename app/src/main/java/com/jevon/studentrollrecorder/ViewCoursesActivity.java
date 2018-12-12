@@ -69,6 +69,10 @@ public class ViewCoursesActivity extends AppCompatActivity{
         });
     }
 
+    /**
+     * ViewCourseActivity observes the ViewCourse to see if any data changes occur
+     * and udpates the list of courses as necessary.
+     */
     public void getCourses(){
         ViewCourse viewModel = new ViewCourse();//ViewModelProviders.of(this).get(ViewCourse.class);
         LiveData<ArrayList<Course>> liveData = viewModel.getCourseLiveData();
