@@ -74,6 +74,13 @@ public class FirebaseLiveData extends LiveData<DataSnapshot> {
         query.removeEventListener(listener);
     }
 
+
+    /**
+     * gets the Courses using the Deserialiser
+     */
+    public LiveData<ArrayList<Course>> getCourses(){
+        return Transformations.map(this, new CourseDeserialiser());
+    }
     /**
      * ValueEventListener
      */
@@ -101,12 +108,5 @@ public class FirebaseLiveData extends LiveData<DataSnapshot> {
             }
             return courses;
         }
-    }
-
-    /**
-     * gets the Courses using the Deserialiser
-     */
-    public LiveData<ArrayList<Course>> getCourses(){
-        return Transformations.map(this, new CourseDeserialiser());
     }
 }
