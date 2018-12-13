@@ -74,7 +74,7 @@ public class ViewCoursesActivity extends AppCompatActivity{
      * and udpates the list of courses as necessary.
      */
     public void getCourses(){
-        ViewCourse viewModel = new ViewCourse();//ViewModelProviders.of(this).get(ViewCourse.class);
+        ViewCourse viewModel = new ViewCourse();
         LiveData<ArrayList<Course>> liveData = viewModel.getCourseLiveData();
 
         liveData.observe(this, new Observer<ArrayList<Course>>(){
