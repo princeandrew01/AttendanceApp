@@ -49,7 +49,6 @@ public class ViewCoursesActivity extends AppCompatActivity{
             });
         lv_courses = (ListView) findViewById(R.id.lv_view_courses);
     }
-
     private void setUpListView(){
         courses = new ArrayList<>();
         getCourses();
@@ -70,6 +69,7 @@ public class ViewCoursesActivity extends AppCompatActivity{
     }
 
     /**
+     * 04086518
      * ViewCourseActivity observes the ViewCourse to see if any data changes occur
      * and udpates the list of courses as necessary.
      */
@@ -91,54 +91,4 @@ public class ViewCoursesActivity extends AppCompatActivity{
         });
 
     }
-
-   /* public void getCourses3(){
-        ViewCourse viewModel = ViewModelProviders.of(this).get(ViewCourse.class);
-        LiveData<DataSnapshot> liveData = viewModel.getDataSnapshotLiveData();
-
-        liveData.observe(this, new Observer<DataSnapshot>() {
-            @Override
-            public void onChanged(@Nullable DataSnapshot snapshot) {
-                if (snapshot != null) {
-                    adapter.clear();
-                    // update the UI here with values in the snapshot
-                    if(snapshot.hasChildren()){
-                        for (DataSnapshot coursesSnapshot: snapshot.getChildren()) {
-                            Course c = coursesSnapshot.getValue(Course.class);
-                            Log.i(LOG_TAG, "Course received: " + c.toString());
-                            adapter.add(c);
-                        }
-                    }
-                } else {
-                    Log.i(LOG_TAG, "No Courses found");
-                }
-            }
-        });
-    }*/
-
-    // Old Code AAS: 2018-12-01
-    /*public void getCourses2(){
-        FirebaseHelper fh = new FirebaseHelper();
-        Firebase ref_id = fh.getRef_id();
-        ref_id.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                adapter.clear();
-                if(snapshot.hasChildren()){
-                    for (DataSnapshot coursesSnapshot: snapshot.getChildren()){
-                        Course c = coursesSnapshot.getValue(Course.class);
-                        Log.i("Course received", c.toString());
-                        adapter.add(c);
-                    }
-                }
-                else
-                    Toast.makeText(ViewCoursesActivity.this,"No courses found on your account",Toast.LENGTH_LONG).show();
-
-            }
-            @Override public void onCancelled(FirebaseError error) {
-                System.out.println("The read failed: " + error.getMessage());
-            }
-        });
-    }*/
-
 }
