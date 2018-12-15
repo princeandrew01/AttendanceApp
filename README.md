@@ -162,7 +162,61 @@ A loose implementation of the Model View Controller Pattern was used:
 ##### Class Diagram
 ![Class Diagram](Images/Proposed/Component2/Class.png)
 ##### Sequence  Diagram
-![Sequence Diagram](Images/Proposed/Component2/Sequence.png
+![Sequence Diagram](Images/Proposed/Component2/Sequence.png)
 
-## Component Three - ViewCourseAnalytics
+## Component Three - TimeHelper & ViewCourseAnalytics Class
+### Issues
+#### Functionality
+##### TimeHelper class
+This Helper class that provides some useful time related functions. Such as formatting time, getting a time-stamp used in student punctuality; acquiring current hour, minute and day information. It also has the ability to retrieve military time when required. The methods available in the helper class are as follows:
+formatTime - This method formats 24hr time into am/pm (12 hour).
+* getIDTimeStamp - This method generates an ID for the session using the time and date when a session is plan to start.
+* getCurrentHour - This method generates the current hour of the day.
+* getCurrentMinute - This method generates the current minute of the day.
+* getCurrDay - This method generates the current day of the week.
+* getMilitaryTime - This method generates the military time.
+##### ViewCourseAnalytics Class
+This java class is based on the computational analysis of data and statistics of a course. The calculations are based on the number of students enrolled in a course and the number of students that arrived late for a session of the course. The program itself sets up the line chart and populates it by creating data points or entries on the line based on the statistical data computed. Within the class, the line charts are used to analyze data. It also utilizes a few date methods in the class for formatting and retrieving the current correct date/time.
+#### Strengths
+1. Functional Code pertaining to Time in the TimeHelper class creating a short-cut class for other classes to call.
+2. All code pertaining to Course Analytics are in one class and the chart drawing are in their relevant classes for analysis.
+#### Weaknesses
+1. The issue is the ViewCourseAnalytics class using its own date/time methods instead of correctly referencing the helper class.
+2. ViewCourseAnalytics class is tightly couple with the date/time methods along with other methods in that class.
+3. TimeHelper class is not referenced correctly in the ViewCourseAnalytics class as well as other classes as well such as FirebaseHelper, Lecture, IdCheckService and AddLecturesActivity classes.
 
+#### Why OCP
+1. There is a failure in the attempt to implement the OCP. For the ViewCourseAnalytics class, it uses its own time related methods when a “Timehelper” class exists.
+2. Modules should be open for extension but closed for modifications.
+3. Developers should design modules that never require to change. In the case where software requirements needs to be changed, for instance, like adding a new time zone, developers should be able to extend the behaviour of such modules by adding new code, not by changing old code that already works. 
+4. This suggest that the behaviour of the module can be extended. The module can then be able to behave in new and different ways as the requirements of the software change.
+5. See UML class diagram depicting current layout of Time helper class not connecting to the ViewCourseAnalytics class.
+
+#### UML Diagrams
+##### Class Diagram
+![Class Diagram](Images/Original/Component3/Class.jpg)
+##### Sequence  Diagram
+![Sequence Diagram](Images/Original/Component3/Sequence.png)
+
+### Proposed Solution
+The main problem in relation to the original implementation is that within ViewCourseAnalytics class it has its own time/date methods that works the other methods within that class which incorporates tight coupling. However, the TimeHelper class already performing time/date related methods to other classes but not referencing TimeHelper correctly. In order to address the issues, the time/date related methods are removed and implemented in the TimeHelper class as well as correctly implementing the TimeHelper methods to other classes such as FirebaseHelper, Lecture, IdCheckService and AddLecturesActivity classes.
+
+#### Design Patterns
+1. Adapter
+   -Adapter pattern was utilized in TimeHelper because of the frequent uses of TimeHelper class in ViewCourseAnalytics and other classes throughout the application. This will allow proper implementation to other classes to effectively use the methods in TImeHelper. There will also be the option to extend in the near future where applicable.
+
+#### The advantages of the new design
+1. Less clutter in the utility classes.
+2. TimeHelper used to full advantage and efficiently utilizing its methods to the other classes.
+3. The TimeHelper would  be open to extension and no need for modification would be necessary.
+
+#### How it facilitates any of SOLID principles discussed
+The Open Closed Principle - In the TimeHelper, it will be closed for modification but open for extension. More methods can be added with regards to time/date, for instance, from the ViewCourseAnalystics class, there were tight coupling with some of the methods. As such, the time/date related methods were removed and was implemented in TimeHelper. The ViewCourseAnalystics would be able to utilize the methods directly from TimeHelper efficiently.
+
+In addition, other extension can be made to TimeHelper, for example, adding a new time format or time zone to the TimeHelper class. This will be able to reference other classes throughout the application if a new feature is to be added later.
+
+#### UML Diagrams
+##### Class Diagram
+![Class Diagram](Images/Proposed/Component3/Class.jpg)
+##### Sequence  Diagram
+![Sequence Diagram](Images/Proposed/Component3/Sequence.png)
