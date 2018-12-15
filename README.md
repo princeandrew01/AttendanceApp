@@ -129,7 +129,7 @@ This activity display a list of the courses using the FirebaseHelper class which
 2. FirebaseHelper should only deal with firebase commands, however ViewCourseActivity has firebase depencies
 #### UML Diagrams
 ##### Class Diagram
-![Class Diagram](Images/Original/Component2/Class.jpg)
+![Class Diagram](Images/Original/Component2/Class.png)
 ##### Sequence  Diagram
 ![Sequence Diagram](Images/Original/Component2/Sequence.png)
 
