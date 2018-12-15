@@ -33,9 +33,11 @@ To plot the charts, a count is kept for students who arrive early and late sessi
 2. If a class has more than one responsibility, then the responsibilities become coupled. In this case the calculations are tightly coupled to creating/updating charts.
 3. Changes to one responsibility may impair or inhibit the class’ ability to meet the others.
 4. This kind of coupling leads to fragile designs that break in unexpected ways when changed.  It may also lead to “code-rot”.
+
 Please note the UML depicting the original Class UML layout of this class as well as the sequence UML diagram depicting the calculation methods. The UML class diagram depicts the abundance of methods in the class and the sequence diagrams depicts the coupling of the methods.
 ##### OCP is being broken.
 1. Open Close Principle: Software entities should be open for extension but closed for modifications.
 2. Developers should design modules that never change. When requirements change or in this case any addition charts are required, you extend the behavior of such modules by adding new code, not by changing old code that already works. 
 3. This means that the behavior of the module can be extended. We can then make the module behave in new and different ways as the requirements of the application change, or to meet the needs of new applications.
+
 Please note the UML depicting the sequence UML diagram depicting the drawing piechart methods located in this class.
