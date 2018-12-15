@@ -41,3 +41,10 @@ Please note the UML depicting the original Class UML layout of this class as wel
 3. This means that the behavior of the module can be extended. We can then make the module behave in new and different ways as the requirements of the application change, or to meet the needs of new applications.
 
 Please note the UML depicting the sequence UML diagram depicting the drawing piechart methods located in this class.
+
+#### UML Diagrams
+##### Class Diagram
+![Class Diagram](Images/Original/Component1/Class.jpg)
+
+##### Sequence Diagram
+![Sequence Diagram](Images/Original/Component1/Sequence.png)
