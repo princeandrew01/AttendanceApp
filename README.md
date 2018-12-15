@@ -101,10 +101,10 @@ Implemented Facade Subsystem:
    * SRP & OCP
 2. Creational Pattern: Factory:
    * To solve the SRP issue, the factory includes an Interface Calculations and an Attendance and Punctuality class which implements the interface. The factory solution now utilizes a class called Statistics which uses the Attendance and Punctuality class to execute calculations for early and late students as well as total attendances. With this solution, the responsibility of the calculations belong to the Statistics class and if another calculation was to be added it can now be created as a new class which implements the Calculations interface. 
-![Factory Class Diagram](Images/Proposed/Component1/Class1.jpg)
+![Factory Class Diagram](Images/Proposed/Component1/Class2.jpg)
 3. Structural  Pattern: Facade
    * To solve the OCP issue, a façade solution was used. An interface called Chart is created along with a Pie and Line class that implement the interface. The façade solution uses a class called ChartRendering which uses the Pie class to create pie charts in methods. These methods create pie charts for attendance and punctuality. If another chart was to be used to show another type of data, for example a line chart for the ViewCourseAnalytics class, it could be added to the this class. 
-![Facade Class Diagram](Images/Proposed/Component1/Class2.jpg)
+![Facade Class Diagram](Images/Proposed/Component1/Class1.jpg)
 
 #### UML Diagram
 ##### Class Diagram
@@ -162,4 +162,7 @@ A loose implementation of the Model View Controller Pattern was used:
 ##### Class Diagram
 ![Class Diagram](Images/Proposed/Component2/Class.png)
 ##### Sequence  Diagram
-![Sequence Diagram](Images/Proposed/Component2/Sequence.png)
+![Sequence Diagram](Images/Proposed/Component2/Sequence.png
+
+## Component Three - ViewCourseAnalytics
+
