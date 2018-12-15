@@ -7,7 +7,7 @@ Team Members:
 
 ## Introduction
 
-The purpose of this project is to investigate the designs done within the code and discover whether or not any design patterns were in violation. The design patterns examined were based on the SOLID principles and once realized, Object-Oriented design patterns were used to resolve the violations/issues. The application chosen for refactoring is called the Attendance Application. This app was Coded/Created/Built by; Shiva Ramoudith and Jevon Alexis. All programs were written in java and built in Android Studio. The purpose of the app is to record courses, lectures and student attendances to these lectures. It also provides analytics by display charts with data based on total attendance and tardiness.
+The purpose of this project is to investigate the designs done within the code and discover whether or not any design patterns were in violation. The design patterns examined were based on the SOLID principles and once realized, Object-Oriented design patterns were used to resolve the violations/issues. The application chosen for refactoring is called the Attendance Application. This app was originally built by; Shiva Ramoudith and Jevon Alexis. All programs were written in java and built in Android Studio. The purpose of the app is to record courses, lectures and student attendances to these lectures. It also provides analytics by display charts with data based on total attendance and tardiness.
 
 ## Component One - ViewIndividualStudentAnalytics class
 ### Issues
