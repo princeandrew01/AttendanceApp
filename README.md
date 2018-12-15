@@ -44,7 +44,7 @@ Please note the UML depicting the sequence UML diagram depicting the drawing pie
 
 #### UML Diagrams
 ##### Class Diagram
-[Class Diagram](Images/Original/Component1/Class.jpg)
+![Class Diagram](Images/Original/Component1/Class.jpg)
 
 ##### Sequence Diagram
-[Sequence Diagram](Images/Original/Component1/Sequence.jpg)
+![Sequence Diagram](Images/Original/Component1/Sequence.jpg)
