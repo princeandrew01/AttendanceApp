@@ -220,3 +220,45 @@ In addition, other extension can be made to TimeHelper, for example, adding a ne
 ![Class Diagram](Images/Proposed/Component3/Class.jpg)
 ##### Sequence  Diagram
 ![Sequence Diagram](Images/Proposed/Component3/Sequence.png)
+
+## Design & Implementation Lessons
+### Lurlynn
+1. Design Pattern – I have been coding for some time, however, I was never exposed to the concept of design patterns. This was a new topic for me and took much time to understand the theory behind it. Though this was a challenge, applying the principles programmatically assisted with a better understanding of the use of the patterns and more importantly the purpose that they serve. Lesson learned is that when writing code, question if that is the only way the code can be written.
+2. GitHub – Much of the functionality of github was new to me. I merely used this for viewing code within other programs. This was also the first I have pushed and pulled work. Lesson learned is that this tool can be used in a variety of ways and can make other project work for efficient.
+3. Android Studio – definitely a new technology and learning experience. The actual set up of the software is what stood out. Lesson learned is that documentation of the steps taken to set this up is very important. It will assist with future designs and implementations. Additionally, it is important to explore the capabilities of application development software before beginning any major work. 
+
+### Nikita
+1. Android Studio.-While I have used Android Studio before, using it at this level was definitely a new experience. Installing and using addons to make the user experience more smooth was interesting. 
+2. Github:- I have never used Github before in this capacity particularly its integration with Android studio. Implementing and utilizing the version control features including creating branches, pushing, pulling, committing changes was interesting.
+3. Design Patterns and how to implement them:- this project has increased my understanding on design patterns. Having to actively spot the failings and envision improvements based on the principles was enlightening.
+
+### Richard
+1. Github - I had used GitHub previously in my final year project in undergrad but   only using the desktop version of it. However, I have never used it with Android Studio integration as version control to commit and push and pull changes. I was unaware of merging branches together into one. It was a learning experience utilizing GitHub to this extent.
+2. Using Android Studio - I used Android Studio before but not to this extent where GitHub was used and other plugins which I got to learn to use which was a great experience.
+3. The utilization of design patterns - Implementing a design pattern was a new experience for me as I was able to learn and identify which one is best to apply to the TimeHelper Class.
+
+### Andrew
+1. Github - While I used github for my Cloud Course seeing it integrated with Android Studio was a learning experience especially when having to merge branches and create a .git to not upload certain files.
+2. Firebase Authentication - Had to set this up from scratch as it did not work originally in the application. The sign on page was rebuilt using new code online so that login can even be done. Additionally, things like adding Authentication keys for every android studio for the group was also something I did not know how to setup.
+3. Firebase - Firebase is my first NoSQL database experience so I did not have any clue as to how it worked. Even simple things like understanding how to get information from the database and in a working format.
+4. Deserializers - This was an inner class that was written to translate a Firebase DataSnapShot into a list of courses. 
+5. Observers - Android has a ViewModel class that works as an observer and this was something to consider in future implementations of code. 
+6. Android Lifecycle - A big part of android as I have learned is the lifecycle of an Activity. This was a brand new concept and required understanding how they worked and how they transfer between one another.
+7. Design Patterns - While looking for possible design patterns for the solution I came across several different ways to do it and the most interesting one was the Observer pattern. I took this idea and expanded it to incorporate the MVC approach as this is one of my favorite design patterns. Design patterns do not have to be so rigid as one is being chosen but a combination of them can be used to achieve the desired goal.
+
+## Limitations & Future Work
+ 
+### Limit
+1. Problem Selection - Because there was a small number of classes, there was not a lot of issues that could be identified. In some cases many classes had very similar problems thus creating an overlap and reducing the number of unique problems available for selection.
+2. Project Selection - While freedom was given to choose a project it was not always easy to source the full project code. Even looking back at old projects written in school some of them did not run or some code was missing.
+3. Database Selection - With the utilization of a cloud-based database (Firebase Console), it was easy to implement. However, Firebase online database is not a completely free platform and has a limit to how much data can be stored. If the storage of the database exceed the free limit then a fee would be charged to continue using Firebase as a database storage for the application.
+ 
+### Future Work
+1. Reworking the ViewCourseAnalytics class to utilize the SRP and OCP principle. The issues present in the ViewIndividualStudentAnalytics class is also present in this class. However, time and similarity/duplication of issues influenced our avoidance to implement the solution.
+2. ViewCourseAnalytics can in future utilize the facade (ChartRendering) to draw the Line Chart implemented within the class.
+3. ViewCourseAnalytics can also utilize the factory (Statistics) to calculate the late attendances for the population of the Line Chart. 
+4. Firebase is referenced throughout many classes in the application and the implementation of problem 2 shows how it can be isolated. This will allow easy database changes to be done without breaking the entire application.
+5. A Util class was used to store certain values but it could be inserted into the Strings Table which is where Android normally default static values.
+6. TimeHelper Utilization could be expanded further as it is under-utilized for its purpose.
+7. An overall clean up of the entire software code should be done as there are many import utilities that were not used in many classes.
+8. Another database could be implemented other than a free version of Firebase which only have limited storage.
