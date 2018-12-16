@@ -86,12 +86,7 @@ public class ViewIndividualStudentAnalytics extends AppCompatActivity {
         cr = new ChartRendering();
         punctChart= new ChartRendering();
 
-        /*ChartRendering cr1 = new ChartRendering();
-        cr1.setPunctPieChart((PieChart) findViewById(R.id.punctuality_graph));
-        this.punctualityPieChart = cr1.drawPunctualityPieChart();
-        //drawAttendancePieChart();
-        //drawPunctualityPieChart();
-        */
+       
         /* get the course from firebase. */
         getCourse();
 
@@ -117,138 +112,8 @@ public class ViewIndividualStudentAnalytics extends AppCompatActivity {
         this.attendancePieChart = cr.drawAttendancePieChart((Attendance) stats.getcalculations("Attendance",studentId, course));
     }
 
-    public void attendanceCalculations2(){
-
-        /* initialize variables.  */
-        this.totalSessions  = 0;
-        this.totalSessionsNotAttended = 0;
-        this.totalSessionsAttended = 0;
-
-        /* get the sessions from the course. */
-        HashMap<String, Session> sessions = course.getSessions();
-
-        /* checks the total number of sessions stored in the hashmap. */
-        this.totalSessions =  sessions.size();
-
-        /* iterate over each session. */
-        for(HashMap.Entry<String, Session> currentSession : sessions.entrySet()){
-
-            /* check if the student we are interested in attended this session. */
-            if(currentSession.getValue().getAttendees().get(studentId) != null){
-                totalSessionsAttended++;
-            }
-            else{
-                totalSessionsNotAttended++;
-            }
-        }
-
-        updateAttendancePieChart();
-    }
-
-    public void updateAttendancePieChart(){
-        /* create an arraylist of entries to enter. these are values on piechart. */
-        ArrayList<Entry> entries = new ArrayList<>();
-        entries.add(new Entry(totalSessionsAttended, 0));
-        entries.add(new Entry(totalSessionsNotAttended,1));
-
-        /* convert to pieDataSet. */
-        PieDataSet dataset = new PieDataSet(entries, "Sessions");
-        dataset.setColors(ColorTemplate.COLORFUL_COLORS);
-        /* create an arraylist of labels for piechart. */
-        ArrayList<String> labels = new ArrayList<String>();
-        labels.add("Attended");
-        labels.add("Missed");
-
-        PieData data = new PieData(labels, dataset);
-
-        this.attendancePieChart.setData(data);
-        this.attendancePieChart.notifyDataSetChanged();
-        this.attendancePieChart.invalidate();
-        this.attendancePieChart.animateY(1500);
-    }
-
-   public void drawAttendancePieChart(){
-
-        /* text in the center of graph. */
-        SpannableString centerText = new SpannableString("Percentage Attendance");
-
-        /* get pie chart view from ui. */
-        this.attendancePieChart = (PieChart) findViewById(R.id.attendance_graph);
-
-        /* create an arraylist of entries to enter. these are values on piechart. */
-        ArrayList<Entry> entries = new ArrayList<>();
-        entries.add(new Entry(totalSessionsAttended, 0));
-        entries.add(new Entry(totalSessionsNotAttended,1));
-
-        /* convert to pieDataSet. */
-        PieDataSet dataset = new PieDataSet(entries, "Sessions");
-        dataset.setColors(ColorTemplate.COLORFUL_COLORS);
-        /* create an arraylist of labels for piechart. */
-        ArrayList<String> labels = new ArrayList<String>();
-        labels.add("Attended");
-        labels.add("Missed");
-
-        PieData data = new PieData(labels, dataset);
-        this.attendancePieChart.setCenterText(centerText);
-        this.attendancePieChart.setUsePercentValues(true);
-        this.attendancePieChart.setData(data);
-
-        this.attendancePieChart.setDescription("Breakdown of Student Attendance.");
-    }
-
-    public void updatePunctualityPieChart(){
-        /* create an arraylist of entries to enter. these are values on piechart. */
-        ArrayList<Entry> entries = new ArrayList<>();
-        entries.add(new Entry(earlySessions, 0));
-        entries.add(new Entry(lateSessions,1));
-
-        /* convert to pieDataSet. */
-        PieDataSet dataset = new PieDataSet(entries, "Sessions");
-        dataset.setColors(ColorTemplate.COLORFUL_COLORS);
-        /* create an arraylist of labels for piechart. */
-        ArrayList<String> labels = new ArrayList<String>();
-        labels.add("Early");
-        labels.add("Late");
-
-        PieData data = new PieData(labels, dataset);
-
-        this.punctualityPieChart.setData(data);
-        this.punctualityPieChart.notifyDataSetChanged();
-        this.punctualityPieChart.invalidate();
-        this.punctualityPieChart.animateY(1500);
-    }
-
-
-
-    public void drawPunctualityPieChart(){
-
-        /* text in the center of graph. */
-        SpannableString centerText = new SpannableString("Punctuality Percentage");
-
-        /* get pie chart view from ui. */
-        this.punctualityPieChart = (PieChart) findViewById(R.id.punctuality_graph);
-
-        /* create an arraylist of entries to enter. these are values on piechart. */
-        ArrayList<Entry> entries = new ArrayList<>();
-        entries.add(new Entry(earlySessions, 0));
-        entries.add(new Entry(lateSessions,1));
-
-        /* convert to pieDataSet. */
-        PieDataSet dataset = new PieDataSet(entries, "Sessions");
-        dataset.setColors(ColorTemplate.COLORFUL_COLORS);
-        /* create an arraylist of labels for piechart. */
-        ArrayList<String> labels = new ArrayList<String>();
-        labels.add("Early");
-        labels.add("Late");
-
-        PieData data = new PieData(labels, dataset);
-        this.punctualityPieChart.setCenterText(centerText);
-        this.punctualityPieChart.setUsePercentValues(true);
-        this.punctualityPieChart.setData(data);
-
-        this.punctualityPieChart.setDescription("Breakdown of Student Punctuality");
-    }
-
+    
+    
     public void getCourse(){
         /* get a firebase helper. */
         FirebaseHelper firebaseHelper = new FirebaseHelper();
@@ -269,7 +134,7 @@ public class ViewIndividualStudentAnalytics extends AppCompatActivity {
                 if(course.getSessions() != null && course.getLecturess() != null){
                     attendanceCalculations();
                     punctualityCalculations();
-                    //this.attendancePieChart = cr.drawAttendancePieChart(studentId);
+                   
                 }
 
             }
@@ -288,93 +153,7 @@ public class ViewIndividualStudentAnalytics extends AppCompatActivity {
 
     }//end NEW punctualityCalculations
 
-    public void punctualityCalculations2(){
-
-        /* initialize data. */
-        lateSessions = 0;
-        earlySessions = 0;
-
-        /* get the hashmap of sessions from the course. */
-        HashMap<String, Session> sessions = course.getSessions();
-
-        /* iterate over each session. */
-        for(HashMap.Entry<String, Session> session : sessions.entrySet()){
-
-            /* check if this student attended the session. */
-            Attendee attendee = session.getValue().getAttendees().get(studentId);
-
-            /* the student attended. */
-            if(attendee != null){
-                /* when the student arrived */
-                int studentHrArrival = attendee.getHr();
-                int studentMinsArrival = attendee.getMin();
-
-                /* using outdated function, look for an update.  */
-                Time studentArrivalTime = new Time(studentHrArrival, studentMinsArrival, 0);
-
-                /* we need to figure out when the session started, we need the session key to find the lecture. */
-                String sessionKey = (String) session.getKey();
-
-                /* trim the spaces */
-                sessionKey = sessionKey.trim();
-
-                /* divide key into parts to identify lecture. */
-                String[] keyParts = sessionKey.split("\\s+");
-
-                /* build string to indentify the lecture. */
-                String lectureKey = keyParts[0].substring(0,3) + " " + keyParts[2];
-
-                /* get the lecture object from lecturekey. */
-                Lecture lecture = course.getLecturess().get(lectureKey);
-
-                /* make sure the lecture exist. */
-                if(lecture != null){
-
-
-                    /* get lecture start time. */
-                    Time lectureStartTime = new Time(lecture.getStartHr(), lecture.getStartMin(), 0);
-
-                    /* if the student comes before the lecture, early.  */
-                    if(studentArrivalTime.compareTo(lectureStartTime) < 0){
-                        earlySessions++;
-                    }
-                    else{
-
-                        int lateLectureHr = lecture.getStartHr();
-                        int lateLectureMin = lecture.getStartMin();
-
-                        int lateHours = 0;
-                        int lateMins = 0;
-                        lateHours = lateTime / 60;
-                        lateMins = lateTime % 60;
-
-                        if(lateLectureMin + lateMins < 60){
-                            lateLectureMin = lateLectureMin + lateMins;
-                        }
-                        else{
-                            lateLectureMin = lateLectureMin + lateMins - 60;
-                            lateLectureHr++;
-                        }
-
-                        lateLectureHr += lateHours;
-
-                        Time lateLectureTime = new Time(lateLectureHr, lateLectureMin, 0);
-                        /* check if student comes before. */
-                        if(studentArrivalTime.compareTo(lateLectureTime) < 0){
-                            earlySessions++;
-                        }
-                        else{
-                            lateSessions++;
-                        }
-                    }
-                }
-            }
-        }
-
-        updatePunctualityPieChart();
-    }
-
-    //nrl punctuality caluclations called here
+   
     public void updateLateGraph(View view){
 
         /* get edit text view. */
@@ -390,6 +169,6 @@ public class ViewIndividualStudentAnalytics extends AppCompatActivity {
         }
 
         /* update chart. */
-        //punctualityCalculations();
+      
     }
 }
