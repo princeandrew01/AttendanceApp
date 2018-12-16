@@ -17,21 +17,21 @@ public class Statistics {
             return null;
         }//end if
         if (caltype.equalsIgnoreCase("Attendance")){
-            Attendance a = new Attendance();
-            a.setCourse(course);
-           // a.setSessions(sessions);
-            a.setStudentID(studentID);
-            a.Calculate();
-            return a;
+            Attendance attend = new Attendance();
+            attend.setCourse(course);
+           
+            attend.setStudentID(studentID);
+            attend.Calculate();
+            return attend;
         }//get calculation for attendance
         else if (caltype.equalsIgnoreCase("Punctuality")){
-            Punctuality a = new Punctuality();
-            a.setCourse(course);
-            // a.setSessions(sessions);
-            a.setStudentID(studentID);
-            a.Calculate();
-            return a;
-          // return new Punctuality();
+            Punctuality punct = new Punctuality();
+            punct.setCourse(course);
+           
+            punct.setStudentID(studentID);
+            punct.Calculate();
+            return punct;
+         
         }//get calculation for punctuality
 
     return null;
