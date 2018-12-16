@@ -1,5 +1,5 @@
 package com.jevon.studentrollrecorder.interfaces;
-/**name updated*/
+/**Interface for Statitics factory and attendance/punctuality subclasses*/
 
 public interface Calculations {
 
