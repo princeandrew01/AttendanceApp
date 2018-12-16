@@ -5,12 +5,13 @@ import com.jevon.studentrollrecorder.pojo.Course;
 import com.jevon.studentrollrecorder.utils.Attendance;
 import com.jevon.studentrollrecorder.utils.Punctuality;
 
-//This is a factory class that generates the object of concrete classes
-//The concrete classes here are attendance and punctuality
-//
+//This is a factory class that generates the object of subclasses classes
+//The subclasses are the util classes:attendance and punctuality
+
 
 public class Statistics {
-
+    //generated the necessary objects attendance and punctuality
+    //casting the return type as Calculations
     public Calculations getcalculations(String caltype, String studentID, Course course){
         if (caltype == null){
             return null;
