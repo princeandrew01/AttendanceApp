@@ -1,4 +1,6 @@
 package com.jevon.studentrollrecorder.utils;
+/**Punctuality class implements Calculations interface
+Calculates punctuality for a particular student*/
 
 import com.jevon.studentrollrecorder.interfaces.Calculations;
 import com.jevon.studentrollrecorder.pojo.Attendee;
@@ -11,7 +13,7 @@ import java.util.HashMap;
 
 public class Punctuality implements Calculations {
 
-   // private HashMap<String, Session> sessions;
+  
     private Course course;
     private int totallateSessions;
     private int totalearlySessions;
@@ -115,10 +117,6 @@ public class Punctuality implements Calculations {
                     }//end else student not early
 
             }//if student attended
-
-
-
-            /**/
 
 
         }//end for loop
