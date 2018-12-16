@@ -266,3 +266,7 @@ In addition, other extension can be made to TimeHelper, for example, adding a ne
 6. TimeHelper Utilization could be expanded further as it is under-utilized for its purpose.
 7. An overall clean up of the entire software code should be done as there are many import utilities that were not used in many classes.
 8. Another database could be implemented other than a free version of Firebase which only have limited storage.
+
+## References
+1. Original Implementation of Application: https://github.com/princeandrew01/OldAttendanceApp
+2. Design Patterns: https://www.tutorialspoint.com/design_pattern/index.htm
