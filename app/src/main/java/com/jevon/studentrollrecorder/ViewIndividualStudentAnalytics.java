@@ -167,8 +167,8 @@ public class ViewIndividualStudentAnalytics extends AppCompatActivity {
             /* toast for invalid number.*/
             Toast.makeText(this, "You did not enter a valid number", Toast.LENGTH_LONG).show();
         }
-
-        /* update chart. */
+        /*update punctuality pie chart*/
+        punctualityCalculations();
       
     }
 }
