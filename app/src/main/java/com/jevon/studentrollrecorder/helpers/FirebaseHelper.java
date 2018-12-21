@@ -35,7 +35,7 @@ public class FirebaseHelper {
         ref = myApplication.getRef();
         uid = myApplication.getSharedPreferences(Utils.SHAREDPREF, Context.MODE_PRIVATE).getString(Utils.ID,null);
         /*keep a reference to the json tree from the point of the lecturer ID
-        since all DB access for a given lecturer would occur from this point*/
+        since all LiveDB access for a given lecturer would occur from this point*/
         ref_id = ref.child(Utils.LECTURERS).child(uid);
     }
 
@@ -49,7 +49,7 @@ public class FirebaseHelper {
         ref_id.child(course.getCourseCode()).setValue(course);
     }
 
-    //Adds a list of lectures to the DB
+    //Adds a list of lectures to the LiveDB
     public void addLectures(String courseCode, ArrayList<Lecture> lectures){
         ObjectMapper m = new ObjectMapper();
         Map<String,Object> sesMap = new HashMap<>();
@@ -62,7 +62,7 @@ public class FirebaseHelper {
         }
     }
 
-    //records a student as present in the DB
+    //records a student as present in the LiveDB
     public  void markAsPresent(String courseCode, String session_id, String student_id, String student_name){
         int hour = timeHelper.getCurrentHour();
         int minute = timeHelper.getCurrentMinute();

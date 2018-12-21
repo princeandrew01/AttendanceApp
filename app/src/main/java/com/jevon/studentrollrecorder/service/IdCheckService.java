@@ -98,7 +98,7 @@ public class IdCheckService extends Service {
 
 
     /*If there is a lecture scheduled for now and the student is registered for the course
-     record him/her as present in the DB*/
+     record him/her as present in the LiveDB*/
     private void markAsPresentInFirebase(){
         LectureSession currentSession = getCurrentSession();
         if(currentSession !=null){
@@ -167,7 +167,7 @@ public class IdCheckService extends Service {
         sendBroadcast(i);
     }
 
-    //This class represents an actual session as depicted in the DB
+    //This class represents an actual session as depicted in the LiveDB
     private class LectureSession{
         private String sessionID;
         private String courseCode;

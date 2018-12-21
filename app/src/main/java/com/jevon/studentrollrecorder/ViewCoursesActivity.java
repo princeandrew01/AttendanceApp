@@ -75,9 +75,7 @@ public class ViewCoursesActivity extends AppCompatActivity{
      */
     public void getCourses(){
         ViewCourse viewModel = new ViewCourse();
-        LiveData<ArrayList<Course>> liveData = viewModel.getCourseLiveData();
-
-        liveData.observe(this, new Observer<ArrayList<Course>>(){
+        viewModel.getCourseLiveData().observe(this, new Observer<ArrayList<Course>>(){
             @Override
             public void onChanged(ArrayList<Course> courses) {
             if (courses.isEmpty() ){

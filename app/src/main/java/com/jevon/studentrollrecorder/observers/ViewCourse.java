@@ -3,6 +3,7 @@ package com.jevon.studentrollrecorder.observers;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 
+import com.jevon.studentrollrecorder.interfaces.LiveDB;
 import com.jevon.studentrollrecorder.pojo.Course;
 
 import java.util.ArrayList;
@@ -11,13 +12,13 @@ import java.util.ArrayList;
  * Will be used as an observer
  */
 public class ViewCourse extends ViewModel {
-    private FirebaseLiveData firebaseLiveData;
+    private LiveDB data;
 
     /**
      * Creata a new instance of FirebaseLiveData
      */
     public ViewCourse(){
-        firebaseLiveData = new FirebaseLiveData();
+        data = new FirebaseLiveData();
     }
 
     /**
@@ -25,7 +26,7 @@ public class ViewCourse extends ViewModel {
      * @return
      */
     public LiveData<ArrayList<Course>> getCourseLiveData(){
-        firebaseLiveData.getQuery("course");
-        return firebaseLiveData.getCourses();
+        data.getQuery("course");
+        return data.getCourses();
     }
 }

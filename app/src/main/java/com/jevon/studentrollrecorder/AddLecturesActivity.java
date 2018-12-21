@@ -74,7 +74,7 @@ public class AddLecturesActivity extends AppCompatActivity {
 
     }
     
-    //get the list of the user's courses from the DB. Needed to check for clashes
+    //get the list of the user's courses from the LiveDB. Needed to check for clashes
     public void getCoursesFromFB(){
         FirebaseHelper fh = new FirebaseHelper();
         Firebase ref_id = fh.getRef_id();
@@ -236,7 +236,7 @@ public class AddLecturesActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    //saves the list of lectures to the DB
+    //saves the list of lectures to the LiveDB
     private void saveAllLectures(){
         if(lectures.size() > 0){
             FirebaseHelper fh = new FirebaseHelper();

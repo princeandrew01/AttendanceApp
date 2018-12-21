@@ -10,6 +10,7 @@ import com.firebase.client.Firebase;
 import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 import com.firebase.client.FirebaseError;
+import com.jevon.studentrollrecorder.interfaces.LiveDB;
 import com.jevon.studentrollrecorder.pojo.Course;
 import com.jevon.studentrollrecorder.utils.MyApplication;
 import com.jevon.studentrollrecorder.utils.Utils;
@@ -19,10 +20,10 @@ import java.util.ArrayList;
 /**
  * 04086518
  * Firebase Live Data will replace the firebase Helper function in the long run.
- *
+ *  Uses the Interface LiveDB which will eventually have all the functions necessary
  * Current Implementation is just for Courses.
  **/
-public class FirebaseLiveData extends LiveData<DataSnapshot> {
+public class FirebaseLiveData extends LiveData<DataSnapshot> implements LiveDB {
     /**
      * uid - Current user ID
      * myApplication - current application running.
@@ -49,6 +50,7 @@ public class FirebaseLiveData extends LiveData<DataSnapshot> {
     /**
      * Sets the query depending on what is being pulled.
      */
+    @Override
     public void getQuery(String type){
         switch(type){
             case "course":
@@ -61,6 +63,7 @@ public class FirebaseLiveData extends LiveData<DataSnapshot> {
     /**
      * gets the Courses using the Deserialiser
      */
+    @Override
     public LiveData<ArrayList<Course>> getCourses(){
         return Transformations.map(this, new CourseDeserialiser());
     }
