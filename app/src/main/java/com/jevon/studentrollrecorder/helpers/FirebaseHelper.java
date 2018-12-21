@@ -28,7 +28,7 @@ public class FirebaseHelper {
     private String uid;
     private Firebase ref, ref_id;
     private MyApplication myApplication;
-    private TimeHelper timeHelper; /* Reference TimeHelper */
+    public TimeHelper timeHelper; /* Reference TimeHelper  - Updated by Richard*/
 
     public FirebaseHelper(){
         myApplication = MyApplication.getInstance();

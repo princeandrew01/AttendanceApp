@@ -36,7 +36,7 @@ public class IdCheckService extends Service {
     private String student_name;
     private ArrayList<Course> courses;
     private final IBinder iBinder = new IdServiceBinder(this);
-    private TimeHelper timeHelper; /* Reference TimeHelper */
+    public TimeHelper timeHelper; /* Reference TimeHelper  - Updated by Richard*/
 
     public IdCheckService() {
     }

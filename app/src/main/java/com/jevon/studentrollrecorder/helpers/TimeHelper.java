@@ -13,7 +13,7 @@ import java.util.StringTokenizer;
  * Created by jevon on 20-Apr-16.
  *
  * Helper class that provides some useful time related functions
- * Modified by Richard on 6-Dec-18
+ * Updated and Extended by Richard on 6-Dec-18
  */
 
 public class TimeHelper {
@@ -56,6 +56,7 @@ public class TimeHelper {
         return hour*100 + min;
     }
 
+    //Function added from ViewCourseAnalytics Class
     public Date toDate(String dateStr){
         SimpleDateFormat dateFormat = new SimpleDateFormat("EEE dd-MM-yy H", Locale.ENGLISH);
         Date sessionDate = new Date();
@@ -68,7 +69,7 @@ public class TimeHelper {
         }
         return sessionDate;
     }
-
+    //Function added from ViewCourseAnalytics Class
     public String shortenDate(String longDate){
         String date = "";
         String token=null;
@@ -96,6 +97,7 @@ public class TimeHelper {
         return date;
     }
 
+    //Function added from ViewCourseAnalytics Class
     public int getStartHour(String date){
         // consider replacing with String.split
         StringTokenizer stringTokenizer = new StringTokenizer(date);

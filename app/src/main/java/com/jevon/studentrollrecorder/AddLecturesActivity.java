@@ -50,7 +50,7 @@ public class AddLecturesActivity extends AppCompatActivity {
     private static final String TAG = "Add lecture activity";
     private static final String NONE = "none";
     private int startHr = -1, startMin = -1, endHr = -1, endMin = -1;
-    private TimeHelper timeHelper; /* Reference TimeHelper */
+    public TimeHelper timeHelper; /* Reference TimeHelper  - Updated by Richard*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

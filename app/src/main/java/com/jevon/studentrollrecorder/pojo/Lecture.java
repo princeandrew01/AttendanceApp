@@ -7,7 +7,7 @@ import com.jevon.studentrollrecorder.helpers.TimeHelper;
  * Created by jevon on 10-Apr-16.
  */
 public class Lecture {
-    private TimeHelper timeHelper; /* Reference TimeHelper */
+    public TimeHelper timeHelper; /* Reference TimeHelper  - Updated by Richard*/
     private int startHr, startMin, endHr, endMin;
     private String day;
 

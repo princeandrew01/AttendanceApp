@@ -40,6 +40,7 @@ import java.util.Locale;
 import java.util.StringTokenizer;
 
 /*This activity shows analytics for the course as a whole*/
+//Changes by Richard to implement TimeHelper Class
 
 public class ViewCourseAnalytics extends AppCompatActivity implements OnChartValueSelectedListener{
 
@@ -60,7 +61,7 @@ public class ViewCourseAnalytics extends AppCompatActivity implements OnChartVal
     private LineData data;
     private LineDataSet dataset;            // will be used for attendance entries
     private LineDataSet dataset2;            // will be used for lateness entries
-    private TimeHelper timeHelper; /* Reference TimeHelper */
+    public TimeHelper timeHelper; /* Reference TimeHelper  - Updated by Richard*/
 
 
     @Override
