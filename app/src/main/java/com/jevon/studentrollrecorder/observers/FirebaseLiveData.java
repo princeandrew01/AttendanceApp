@@ -50,8 +50,7 @@ public class FirebaseLiveData extends LiveData<DataSnapshot> implements LiveDB {
     /**
      * Sets the query depending on what is being pulled.
      */
-    @Override
-    public void getQuery(String type){
+    private void getQuery(String type){
         switch(type){
             case "course":
                     this.query = myApplication.getRef().child(Utils.LECTURERS).child(uid);
@@ -65,6 +64,7 @@ public class FirebaseLiveData extends LiveData<DataSnapshot> implements LiveDB {
      */
     @Override
     public LiveData<ArrayList<Course>> getCourses(){
+        this.getQuery("course");
         return Transformations.map(this, new CourseDeserialiser());
     }
     /**

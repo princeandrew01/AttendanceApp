@@ -11,7 +11,7 @@ import java.util.ArrayList;
 /**
  * Will be used as an observer
  */
-public class ViewCourse extends ViewModel {
+public class ViewCourse {
     private LiveDB data;
 
     /**
@@ -26,7 +26,6 @@ public class ViewCourse extends ViewModel {
      * @return
      */
     public LiveData<ArrayList<Course>> getCourseLiveData(){
-        data.getQuery("course");
         return data.getCourses();
     }
 }
