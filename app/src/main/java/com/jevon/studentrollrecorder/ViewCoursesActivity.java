@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.arch.lifecycle.LiveData;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,6 +23,7 @@ import java.util.ArrayList;
 
 public class ViewCoursesActivity extends AppCompatActivity{
     private ListView lv_courses;
+    private ViewCourse viewModel;
     private ArrayList<Course> courses;
     private ArrayAdapter<Course> adapter;
     private static final String LOG_TAG = "ViewCourseActivity";
@@ -33,6 +33,7 @@ public class ViewCoursesActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_courses);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        viewModel = new ViewCourse();
         setSupportActionBar(toolbar);
         setUpUI();
         setUpListView();
@@ -74,7 +75,6 @@ public class ViewCoursesActivity extends AppCompatActivity{
      * and udpates the list of courses as necessary.
      */
     public void getCourses(){
-        ViewCourse viewModel = new ViewCourse();
         viewModel.getCourseLiveData().observe(this, new Observer<ArrayList<Course>>(){
             @Override
             public void onChanged(ArrayList<Course> courses) {
