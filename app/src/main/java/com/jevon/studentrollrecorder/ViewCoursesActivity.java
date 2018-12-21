@@ -13,7 +13,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import android.arch.lifecycle.Observer;
-import com.jevon.studentrollrecorder.observers.ViewCourse;
+import com.jevon.studentrollrecorder.mediators.ViewDB;
 import com.jevon.studentrollrecorder.pojo.Course;
 import com.jevon.studentrollrecorder.utils.Utils;
 
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 public class ViewCoursesActivity extends AppCompatActivity{
     private ListView lv_courses;
-    private ViewCourse viewModel;
+    private ViewDB viewModel;
     private ArrayList<Course> courses;
     private ArrayAdapter<Course> adapter;
     private static final String LOG_TAG = "ViewCourseActivity";
@@ -33,7 +33,7 @@ public class ViewCoursesActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_courses);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        viewModel = new ViewCourse();
+        viewModel = new ViewDB();
         setSupportActionBar(toolbar);
         setUpUI();
         setUpListView();
@@ -71,11 +71,11 @@ public class ViewCoursesActivity extends AppCompatActivity{
 
     /**
      * 04086518
-     * ViewCourseActivity observes the ViewCourse to see if any data changes occur
+     * ViewCourseActivity observes the ViewDB to see if any data changes occur
      * and udpates the list of courses as necessary.
      */
     public void getCourses(){
-        viewModel.getCourseLiveData().observe(this, new Observer<ArrayList<Course>>(){
+        viewModel.getCourses().observe(this, new Observer<ArrayList<Course>>(){
             @Override
             public void onChanged(ArrayList<Course> courses) {
             if (courses.isEmpty() ){

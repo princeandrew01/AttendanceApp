@@ -1,23 +1,22 @@
-package com.jevon.studentrollrecorder.observers;
+package com.jevon.studentrollrecorder.mediators;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
 
 import com.jevon.studentrollrecorder.interfaces.LiveDB;
+import com.jevon.studentrollrecorder.observers.FirebaseLiveData;
 import com.jevon.studentrollrecorder.pojo.Course;
 
 import java.util.ArrayList;
 
-/**
- * Will be used as an observer
- */
-public class ViewCourse {
+
+public class ViewDB {
     private LiveDB data;
 
     /**
      * Creata a new instance of FirebaseLiveData
      */
-    public ViewCourse(){
+    public ViewDB(){
         data = new FirebaseLiveData();
     }
 
@@ -25,7 +24,7 @@ public class ViewCourse {
      * Returns ArrayList of Courses using the firebaseLiveData
      * @return
      */
-    public LiveData<ArrayList<Course>> getCourseLiveData(){
+    public LiveData<ArrayList<Course>> getCourses(){
         return data.getCourses();
     }
 }
