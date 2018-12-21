@@ -138,29 +138,26 @@ This activity display a list of the courses using the FirebaseHelper class which
 ![Sequence Diagram](Images/Original/Component2/Sequence.png)
 
 ### Proposed Solution
-The primary issue of the original implementation is that Firebase is in all the classes that are linked to ViewCourseActivity. The proposed method will take firebase completely out of ViewCourseActivity and house it in a separate entity. While FirebaseHelper tried to do that it still needed to use a ValueEventListener which is part of Firebase. To separate that out ViewCourseActivity will now observe a ViewModel Class that will actually called the Firebase commands. This way ViewCourseActivity does not end up using any Firebase references and will only receive a list of Courses.
+The primary issue of the original implementation is that Firebase is in all the classes that are linked to ViewCourseActivity. The proposed method will take firebase completely out of ViewCourseActivity and house it in a separate entity. While FirebaseHelper tried to do that it still needed to use a ValueEventListener which is part of Firebase. To separate that out ViewCourseActivity will now observer a LiveData Object that will house the data that changes dynamically. To get this LiveData Object there will be a mediator in between called ViewCourse that will be able to pull the information from the new Firebase class and return it to ViewCourseActivity. This way ViewCourseActivity does not need to know how to get the LiveData and just observes it.
 
 #### Design Patterns
 ##### Observer
-Observer pattern is used due to how Firebase retrieves Data. Firebase requires a ValueEventListener to get data in real time and update any necessary components. The ViewCourseActivity will observe the ViewCourse Class for any changes and update the course list with any changes.
-##### MVC Pattern 
-A loose implementation of the Model View Controller Pattern was used:
-1. FirebaseLiveData (Model) - This will contain the database interaction with Firebase and parse the data in a way that other classes can use it without having any references to Firebase.
-2. ViewCourseActivity (View) - This will just be displaying the information from the database by observing the ViewClass (Controller).
-3. ViewCourse (Controller) - This will handle the interaction between the FirebaseLiveData and ViewCourseActivity. It instantiates a FirebaseLiveData and returns the information in the form of a list of Courses. 
+Observer pattern is used due to how Firebase retrieves Data. Firebase uses a LiveData object to return information and any updates are done to that LiveData object. The ViewCourseActivity will observe the LiveData for any changes and update the course list with any changes.
+##### Mediator Pattern 
+An implementation of the Mediator pattern was used to get the LiveData object to ViewCourseActivity by creating a class called the ViewCourses that is responsible for returning the LiveData with Courses using the FireBaseLiveData.
 
 #### The advantages of the new design
-1. MVC naturally tends to end to Abstract code into reusable modules and with the design principles chosen it leads to each component being independent and have a unique function.
-2. Firebase is not referenced all over the classes
-3. The Database calls and commands only exist in one class and the other classes that interact do not require it.
-4. If a change to the database type is required a new database class can be written and only the controller will need updating.
-5. Utilises the same underlying classes that were developed by the original developers such as Courses to return the data in a format the application understands.
+1. Firebase is not referenced all over the classes but instead in one central class.
+2.	If a change to the database type is required a new database class can be written and only the ViewCourses will need updating to use the new Class.
+3.	Utilizes the same underlying classes that were developed by the original developers such as Courses to return the data in a format the application understands.
 
 #### How it facilitates any of SOLID principles discussed
-1. Solid Responsibility Principle - Each component has a unique function:
-2. FirebaseLiveData - Returns firebase information in useable format.
-3. ViewCourse - Gets the information from FirebaseLiveData and sends it to ViewCourseActivitiy.
-4. ViewCourseActivity - Only responsible for displaying of Data and observing ViewCourse.
+1.	Solid Responsibility Principle - Each component has a unique function:
+   * FirebaseLiveData - Returns firebase information in useable format.
+   * ViewCourse - Gets the information from FirebaseLiveData and sends it to ViewCourseActivitiy.
+   * ViewCourseActivity - Only responsible for displaying of Data and observing ViewCourse.
+2.	Liskov Substitution Principle – FireBaseLiveData is an implementation of LiveDB and classes only need to reference LiveDB to get access to FireBaseLiveData
+
 
 #### UML Diagrams
 ##### Class Diagram
