@@ -1,7 +1,6 @@
 package com.jevon.studentrollrecorder.mediators;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.ViewModel;
 
 import com.jevon.studentrollrecorder.interfaces.LiveDB;
 import com.jevon.studentrollrecorder.observers.FirebaseLiveData;
