@@ -141,10 +141,14 @@ This activity display a list of the courses using the FirebaseHelper class which
 The primary issue of the original implementation is that Firebase is in all the classes that are linked to ViewCourseActivity. The proposed method will take firebase completely out of ViewCourseActivity and house it in a separate entity. While FirebaseHelper tried to do that it still needed to use a ValueEventListener which is part of Firebase. To separate that out ViewCourseActivity will now observer a LiveData Object that will house the data that changes dynamically. To get this LiveData Object there will be a mediator in between called ViewCourse that will be able to pull the information from the new Firebase class and return it to ViewCourseActivity. This way ViewCourseActivity does not need to know how to get the LiveData and just observes it.
 
 #### Design Patterns
-##### Observer
-Observer pattern is used due to how Firebase retrieves Data. Firebase uses a LiveData object to return information and any updates are done to that LiveData object. The ViewCourseActivity will observe the LiveData for any changes and update the course list with any changes.
+##### Factory
+Firebase returns a LiveData Object that stores the data to be read. This data can vary depending on what level the tree. A semi-implementation of the Factory pattern was done which takes away how it is returned and just produces a LiveData Object of the appropriate type. In this implementation, only the course list was implemented and the type of LiveData is ArrayList of Courses.
+
 ##### Mediator Pattern 
-An implementation of the Mediator pattern was used to get the LiveData object to ViewCourseActivity by creating a class called the ViewCourses that is responsible for returning the LiveData with Courses using the FireBaseLiveData.
+An implementation of the Mediator pattern was used to get the LiveData object to ViewCourseActivity by creating a class called the ViewDB that is responsible for returning the LiveData with Courses using the FireBaseLiveData.
+
+##### Observer
+Observer pattern is used to observer the LiveData for any changes that happen to the data. The List of courses is updated using this information in the ViewCourseActivity.
 
 #### The advantages of the new design
 1. Firebase is not referenced all over the classes but instead in one central class.
@@ -155,9 +159,8 @@ An implementation of the Mediator pattern was used to get the LiveData object to
 1.	Solid Responsibility Principle - Each component has a unique function:
    * FirebaseLiveData - Returns firebase information in useable format.
    * ViewCourse - Gets the information from FirebaseLiveData and sends it to ViewCourseActivitiy.
-   * ViewCourseActivity - Only responsible for displaying of Data and observing ViewCourse.
+   * ViewCourseActivity - Only responsible for displaying of Data and observing the LiveData Object.
 2.	Liskov Substitution Principle – FireBaseLiveData is an implementation of LiveDB and classes only need to reference LiveDB to get access to FireBaseLiveData
-
 
 #### UML Diagrams
 ##### Class Diagram
